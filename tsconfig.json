@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+        "module": "commonjs",
+        "declaration": true,
+        "sourceMap": true,
+        "outDir": "./dist/",
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "include": [
+        "lib/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+        "examples"
+    ]
+}

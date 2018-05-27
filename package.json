@@ -1,0 +1,24 @@
+{
+  "name": "valdat",
+  "version": "0.1.0",
+  "description": "A modern day validator for the masses",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [
+    "vfr",
+    "valid",
+    "validator",
+    "validate",
+    "validate-react"
+  ],
+  "author": "Vijay Dev <vijaydev.in@gmail.com> (http://vijaydev.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/lodash": "^4.14.109",
+    "lodash": "^4.17.10"
+  }
+}
