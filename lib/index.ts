@@ -1,5 +1,6 @@
 import { IData } from './Validate';
 import ValidateString from './ValidateString';
+import ValidateEnum from './ValidateEnum';
 
 const Valdat: IData = {};
 
@@ -35,6 +36,8 @@ Valdat.register = (name: string, method: Function) => {
     Valdat[name] = method;
 }
 
-Valdat.register('string', () => new ValidateString().string());
+Valdat.register('string', () => new ValidateString().string);
+Valdat.register('oneOf', () => new ValidateEnum().oneOf);
+Valdat.register('oneOfType', () => new ValidateEnum().oneOfType);
 
 export { Valdat as default };
