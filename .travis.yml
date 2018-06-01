@@ -1,0 +1,32 @@
+language: nodejs
+
+before_script:
+  - npm run setup
+
+script:
+  - npm run test
+
+after_success:
+  - npm run typedoc
+  - npm pack
+
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    local_dir: docs/
+    github_token: d6ffeba049e99f460e84d76afaaad83f63ea3c89
+    on:
+      tags: true
+  - provider: releases
+    api_key: d6ffeba049e99f460e84d76afaaad83f63ea3c89
+    file_glob: true
+    file: "valdat-*.tgz"
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: npm
+    skip_cleanup: true
+    email: "vijaydev.in@gmail.com"
+    api_key: 9b27432e-5b6a-4445-bac2-195dd19aa532
+    on:
+      tags: true

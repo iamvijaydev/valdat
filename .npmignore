@@ -1,0 +1,10 @@
+tsconfig.json
+.travis.yml
+.nojekyll
+lib/
+docs/
+dist/test/
+.npmignore
+
+// npm pack
+valdat-*.tgz
