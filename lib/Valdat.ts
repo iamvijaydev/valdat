@@ -1,8 +1,10 @@
+import isFunction from 'lodash/isFunction';
+
 import { IData } from './Validate';
 
 const Valdat: IData = {};
 
-Valdat.check = (schema: IData, data: IData) => {
+Valdat.check = (schema: IData = {}, data: IData = {}) => {
     let isValid = true;
     let errors: IData = {};
 
@@ -22,7 +24,7 @@ Valdat.check = (schema: IData, data: IData) => {
                     break;
                 }
             }
-        })
+        });
 
     return {
         isValid,
@@ -31,6 +33,13 @@ Valdat.check = (schema: IData, data: IData) => {
 }
 
 Valdat.register = (name: string, method: Function) => {
+    if (!name) {
+        throw new Error('Register expects to be called with a name.');
+    }
+    if (!isFunction(method)) {
+        throw new Error('Register expects the method to be function.')
+    }
+
     Valdat[name] = method;
 }
 
