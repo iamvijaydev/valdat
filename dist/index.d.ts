@@ -1,3 +1,2 @@
-import { IData } from './Validate';
-declare const Valdat: IData;
+import Valdat from './Valdat';
 export { Valdat as default };

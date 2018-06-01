@@ -76,7 +76,7 @@ export default class ValidateNumber extends Validate {
         return this;
     }
 
-    max(max: Number): ValidateNumber {
+    max(max: number): ValidateNumber {
         this.stack.push(this.maxFatory(max));
         return this;
     }

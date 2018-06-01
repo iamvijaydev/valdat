@@ -13,14 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var isString_1 = __importDefault(require("lodash/isString"));
+var isArray_1 = __importDefault(require("lodash/isArray"));
 var Validate_1 = __importDefault(require("./Validate"));
-var ValidateString = /** @class */ (function (_super) {
-    __extends(ValidateString, _super);
-    function ValidateString() {
+var ValidateArray = /** @class */ (function (_super) {
+    __extends(ValidateArray, _super);
+    function ValidateArray() {
         return _super.call(this) || this;
     }
-    ValidateString.prototype.stringFatory = function () {
+    ValidateArray.prototype.arrayFatory = function () {
         var _this = this;
         return function (data, key) {
             var value = data[key];
@@ -32,9 +32,9 @@ var ValidateString = /** @class */ (function (_super) {
                     message = key + " is required, but its value is undefined.";
                 }
             }
-            else if (!isString_1.default(value)) {
+            else if (isArray_1.default(value)) {
                 error = true;
-                message = key + " should be string, recieved " + typeof value + ".";
+                message = key + " should be an array, recieved " + typeof value + ".";
             }
             return {
                 error: error,
@@ -42,14 +42,14 @@ var ValidateString = /** @class */ (function (_super) {
             };
         };
     };
-    ValidateString.prototype.hasLenFatory = function (length) {
+    ValidateArray.prototype.notEmptyFactory = function () {
         return function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (value.length !== length) {
+            if (!value.length) {
                 error = true;
-                message = key + " should be of length " + length + ".";
+                message = key + " cannot be an empty array.";
             }
             return {
                 error: error,
@@ -57,34 +57,34 @@ var ValidateString = /** @class */ (function (_super) {
             };
         };
     };
-    ValidateString.prototype.regexFactory = function (regex) {
+    ValidateArray.prototype.ofFactory = function (type) {
         return function (data, key) {
             var value = data[key];
-            var error = false;
-            var message = '';
-            if (!regex.test(value)) {
-                error = true;
-                message = key + " does not match the regex " + regex + ".";
-            }
+            var match = value.some(function (item) {
+                var err = type({ check: item }, 'check').error;
+                return !err;
+            });
+            var error = type(data, key);
+            var message = error ? 'Failed to match' : '';
             return {
                 error: error,
                 message: message,
             };
         };
     };
-    ValidateString.prototype.string = function () {
-        this.stack.push(this.stringFatory());
+    ValidateArray.prototype.array = function () {
+        this.stack.push(this.arrayFatory());
         return this;
     };
-    ValidateString.prototype.hasLen = function (length) {
-        this.stack.push(this.hasLenFatory(length));
+    ValidateArray.prototype.notEmpty = function () {
+        this.stack.push(this.notEmptyFactory());
         return this;
     };
-    ValidateString.prototype.matchRegex = function (regex) {
-        this.stack.push(this.regexFactory(regex));
+    ValidateArray.prototype.of = function (type) {
+        this.stack.push(this.ofFactory(type));
         return this;
     };
-    return ValidateString;
+    return ValidateArray;
 }(Validate_1.default));
-exports.default = ValidateString;
-//# sourceMappingURL=ValidateString.js.map
+exports.default = ValidateArray;
+//# sourceMappingURL=ValidateArray.js.map

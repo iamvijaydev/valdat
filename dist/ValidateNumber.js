@@ -13,14 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var isString_1 = __importDefault(require("lodash/isString"));
+var isNumber_1 = __importDefault(require("lodash/isNumber"));
 var Validate_1 = __importDefault(require("./Validate"));
-var ValidateString = /** @class */ (function (_super) {
-    __extends(ValidateString, _super);
-    function ValidateString() {
+var ValidateNumber = /** @class */ (function (_super) {
+    __extends(ValidateNumber, _super);
+    function ValidateNumber() {
         return _super.call(this) || this;
     }
-    ValidateString.prototype.stringFatory = function () {
+    ValidateNumber.prototype.numberFatory = function () {
         var _this = this;
         return function (data, key) {
             var value = data[key];
@@ -32,9 +32,9 @@ var ValidateString = /** @class */ (function (_super) {
                     message = key + " is required, but its value is undefined.";
                 }
             }
-            else if (!isString_1.default(value)) {
+            else if (isNumber_1.default(value)) {
                 error = true;
-                message = key + " should be string, recieved " + typeof value + ".";
+                message = key + " should be number, recieved " + typeof value + ".";
             }
             return {
                 error: error,
@@ -42,14 +42,14 @@ var ValidateString = /** @class */ (function (_super) {
             };
         };
     };
-    ValidateString.prototype.hasLenFatory = function (length) {
+    ValidateNumber.prototype.minFatory = function (min) {
         return function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (value.length !== length) {
+            if (value < min) {
                 error = true;
-                message = key + " should be of length " + length + ".";
+                message = key + " should be greater than or equal to " + min + ".";
             }
             return {
                 error: error,
@@ -57,14 +57,14 @@ var ValidateString = /** @class */ (function (_super) {
             };
         };
     };
-    ValidateString.prototype.regexFactory = function (regex) {
+    ValidateNumber.prototype.maxFatory = function (max) {
         return function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (!regex.test(value)) {
+            if (value > max) {
                 error = true;
-                message = key + " does not match the regex " + regex + ".";
+                message = key + " should be less than or equal to " + max + ".";
             }
             return {
                 error: error,
@@ -72,19 +72,19 @@ var ValidateString = /** @class */ (function (_super) {
             };
         };
     };
-    ValidateString.prototype.string = function () {
-        this.stack.push(this.stringFatory());
+    ValidateNumber.prototype.number = function () {
+        this.stack.push(this.numberFatory());
         return this;
     };
-    ValidateString.prototype.hasLen = function (length) {
-        this.stack.push(this.hasLenFatory(length));
+    ValidateNumber.prototype.min = function (min) {
+        this.stack.push(this.minFatory(min));
         return this;
     };
-    ValidateString.prototype.matchRegex = function (regex) {
-        this.stack.push(this.regexFactory(regex));
+    ValidateNumber.prototype.max = function (max) {
+        this.stack.push(this.maxFatory(max));
         return this;
     };
-    return ValidateString;
+    return ValidateNumber;
 }(Validate_1.default));
-exports.default = ValidateString;
-//# sourceMappingURL=ValidateString.js.map
+exports.default = ValidateNumber;
+//# sourceMappingURL=ValidateNumber.js.map

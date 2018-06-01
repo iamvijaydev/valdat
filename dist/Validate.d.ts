@@ -6,9 +6,4 @@ export default class Validate {
     stack: Function[];
     constructor();
     isRequired(): Validate;
-    enumFactory(items: any[]): (data: IData, key: string) => {
-        error: boolean;
-        message: string;
-    };
-    enum(items: String[]): Validate;
 }

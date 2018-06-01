@@ -1,31 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValidateString_1 = require("./ValidateString");
-var Valdat = {};
-exports.default = Valdat;
-Valdat.check = function (schema, data) {
-    var isValid = true;
-    var errors = {};
-    Object.keys(schema)
-        .forEach(function (key) {
-        var stack = schema[key].stack;
-        for (var i = 0, j = stack.length; i < j; i++) {
-            var test = stack[i];
-            var _a = test(data, key), error = _a.error, message = _a.message;
-            if (error) {
-                isValid = false;
-                errors[key] = message;
-                break;
-            }
-        }
-    });
-    return {
-        isValid: isValid,
-        errors: errors
-    };
-};
-Valdat.register = function (name, method) {
-    Valdat[name] = method;
-};
-Valdat.register('string', function () { return new ValidateString_1.default().string(); });
+var Valdat_1 = __importDefault(require("./Valdat"));
+exports.default = Valdat_1.default;
+var ValidateString_1 = __importDefault(require("./ValidateString"));
+var ValidateNumber_1 = __importDefault(require("./ValidateNumber"));
+var ValidateEnum_1 = __importDefault(require("./ValidateEnum"));
+Valdat_1.default.register('string', function () { return new ValidateString_1.default().string; });
+Valdat_1.default.register('number', function () { return new ValidateNumber_1.default().number; });
+Valdat_1.default.register('oneOf', function () { return new ValidateEnum_1.default().oneOf; });
+Valdat_1.default.register('oneOfType', function () { return new ValidateEnum_1.default().oneOfType; });
 //# sourceMappingURL=index.js.map
