@@ -12,7 +12,8 @@
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
-        "suppressImplicitAnyIndexErrors": true
+        "suppressImplicitAnyIndexErrors": true,
+        "esModuleInterop": true
     },
     "include": [
         "lib/**/*"

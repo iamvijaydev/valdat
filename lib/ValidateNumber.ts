@@ -1,13 +1,13 @@
-import isString from 'lodash/isString';
+import isNumber from 'lodash/isNumber';
 
 import Validate, { IData } from './Validate';
 
-export default class ValidateString extends Validate {
+export default class ValidateNumber extends Validate {
     constructor() {
         super();
     }
 
-    stringFatory() {
+    numberFatory() {
         return (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -18,9 +18,9 @@ export default class ValidateString extends Validate {
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
                 }
-            } else if (!isString(value)) {
+            } else if (isNumber(value)) {
                 error = true;
-                message = `${key} should be string, recieved ${typeof value}.`;
+                message = `${key} should be number, recieved ${typeof value}.`;
             }
 
             return {
@@ -30,15 +30,15 @@ export default class ValidateString extends Validate {
         }
     }
 
-    hasLenFatory(length: number) {
+    minFatory(min: number) {
         return (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (value.length !== length) {
+            if (value < min) {
                 error = true;
-                message = `${key} should be of length ${length}.`;
+                message = `${key} should be greater than or equal to ${min}.`;
             }
 
             return {
@@ -48,15 +48,15 @@ export default class ValidateString extends Validate {
         }
     }
 
-    regexFactory(regex: RegExp) {
+    maxFatory(max: number) {
         return (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (!regex.test(value)) {
+            if (value > max) {
                 error = true;
-                message = `${key} does not match the regex ${regex}.`;
+                message = `${key} should be less than or equal to ${max}.`;
             }
 
             return {
@@ -66,18 +66,18 @@ export default class ValidateString extends Validate {
         }
     }
 
-    string(): ValidateString{
-        this.stack.push(this.stringFatory());
+    number(): ValidateNumber {
+        this.stack.push(this.numberFatory());
         return this;
     }
 
-    hasLen(length: number): ValidateString{
-        this.stack.push(this.hasLenFatory(length));
+    min(min: number): ValidateNumber {
+        this.stack.push(this.minFatory(min));
         return this;
     }
 
-    matchRegex(regex: RegExp): ValidateString{
-        this.stack.push(this.regexFactory(regex));
+    max(max: Number): ValidateNumber {
+        this.stack.push(this.maxFatory(max));
         return this;
     }
 }
