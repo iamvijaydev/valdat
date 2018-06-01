@@ -31,8 +31,11 @@ describe('Valdat.register:', () => {
     });
 
     test('Properly registers a method', () => {
-        Valdat.register('sayMyName', () => 'Heisenberg!');
+        Valdat.register('sayMyName', () => () => 'Heisenberg!');
 
         expect(Valdat).toHaveProperty('sayMyName', expect.any(Function));
+        expect({
+            name: Valdat.sayMyName(),
+        }).toHaveProperty('name', expect.any(Function));
     })
 });
