@@ -1,6 +1,6 @@
 {
   "name": "valdat",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A modern day validator for the masses",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
