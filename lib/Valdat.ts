@@ -43,4 +43,8 @@ Valdat.register = (name: string, method: Function) => {
     Valdat[name] = method;
 }
 
+Valdat.custom = (validate: Function) => ({
+    stack: [validate],
+});
+
 export { Valdat as default };
