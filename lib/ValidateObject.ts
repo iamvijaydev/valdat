@@ -7,8 +7,8 @@ export default class ValidateObject extends Validate {
         super();
     }
 
-    objectFatory() {
-        return (data: IData, key: string) => {
+    private objectFatory() {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -26,22 +26,24 @@ export default class ValidateObject extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    keysFactory(shape: IData) {
-        return (data: IData, key: string) => {
+    private keysFactory(shape: IData) {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
 
             const matchFailed = Object.keys(shape)
                 .some((shapeKey) => {
-                    const shapeFn = shape[shapeKey];
+                    const validatorFn = shape[shapeKey];
                     const {
                         error: err,
-                    } = shapeFn(value, shapeKey);
+                    } = validatorFn(value, shapeKey);
 
                     return err;
                 })
@@ -54,8 +56,10 @@ export default class ValidateObject extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
     object(): ValidateObject {

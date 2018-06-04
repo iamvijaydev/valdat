@@ -5,8 +5,8 @@ export default class ValidateEnum extends Validate {
         super();
     }
 
-    oneOfFactory(types: any[]) {
-        return (data: IData, key: string) => {
+    private oneOfFactory(types: any[]) {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -19,15 +19,17 @@ export default class ValidateEnum extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    oneOfTypeFactory(types: Function[]) {
-        return (data: IData, key: string) => {
+    private oneOfTypeFactory(types: Function[]) {
+        const validator =  (data: IData, key: string) => {
             const value = data[key];
-            const match = types.some((item) => {
-                const { error: err } = item(data, key);
+            const match = types.some((validatorFn) => {
+                const { error: err } = validatorFn(data, key);
 
                 return !err;
             })
@@ -37,8 +39,10 @@ export default class ValidateEnum extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
     oneOf(types: any[]) {

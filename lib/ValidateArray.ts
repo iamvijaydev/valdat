@@ -7,8 +7,8 @@ export default class ValidateArray extends Validate {
         super();
     }
 
-    arrayFatory() {
-        return (data: IData, key: string) => {
+    private arrayFactory() {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -26,12 +26,14 @@ export default class ValidateArray extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    notEmptyFactory() {
-        return (data: IData, key: string) => {
+    private notEmptyFactory() {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -44,12 +46,14 @@ export default class ValidateArray extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    ofFactory(type: Function) {
-        return (data: IData, key: string) => {
+    private ofFactory(type: Function) {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             const match = value.some((item: any) => {
                 const { error: err } = type({ check: item }, 'check');
@@ -62,12 +66,14 @@ export default class ValidateArray extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
     array(): ValidateArray {
-        this.stack.push(this.arrayFatory());
+        this.stack.push(this.arrayFactory());
         return this;
     }
 

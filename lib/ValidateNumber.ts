@@ -1,14 +1,15 @@
 import isNumber from 'lodash/isNumber';
 
 import Validate, { IData } from './Validate';
+import ValidateObject from './ValidateObject';
 
 export default class ValidateNumber extends Validate {
     constructor() {
         super();
     }
 
-    numberFatory() {
-        return (data: IData, key: string) => {
+    private numberFatory() {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -26,12 +27,14 @@ export default class ValidateNumber extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    minFatory(min: number) {
-        return (data: IData, key: string) => {
+    private minFatory(min: number) {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -44,12 +47,14 @@ export default class ValidateNumber extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    maxFatory(max: number) {
-        return (data: IData, key: string) => {
+    private maxFatory(max: number) {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -62,8 +67,10 @@ export default class ValidateNumber extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
     number(): ValidateNumber {

@@ -7,8 +7,8 @@ export default class ValidateString extends Validate {
         super();
     }
 
-    stringFatory() {
-        return (data: IData, key: string) => {
+    private stringFatory() {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -26,12 +26,14 @@ export default class ValidateString extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    hasLenFatory(length: number) {
-        return (data: IData, key: string) => {
+    private hasLenFatory(length: number) {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -44,12 +46,14 @@ export default class ValidateString extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    regexFactory(regex: RegExp) {
-        return (data: IData, key: string) => {
+    private regexFactory(regex: RegExp) {
+        const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
@@ -62,21 +66,23 @@ export default class ValidateString extends Validate {
             return {
                 error,
                 message,
-            }
-        }
+            };
+        };
+
+        return validator;
     }
 
-    string(): ValidateString{
+    string(): ValidateString {
         this.stack.push(this.stringFatory());
         return this;
     }
 
-    hasLen(length: number): ValidateString{
+    hasLen(length: number): ValidateString {
         this.stack.push(this.hasLenFatory(length));
         return this;
     }
 
-    matchRegex(regex: RegExp): ValidateString{
+    matchRegex(regex: RegExp): ValidateString {
         this.stack.push(this.regexFactory(regex));
         return this;
     }
