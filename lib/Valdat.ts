@@ -43,8 +43,12 @@ Valdat.register = (name: string, method: Function) => {
     Valdat[name] = method;
 }
 
-Valdat.custom = (validate: Function) => ({
-    stack: [validate],
-});
+Valdat.custom = (validator: Function) => {
+    if (!isFunction(validator)) {
+        throw new Error('Custom expects the validator to be function.')
+    }
+
+    return { stack: [validator] };
+}
 
 export { Valdat as default };
