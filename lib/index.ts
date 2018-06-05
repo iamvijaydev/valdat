@@ -1,9 +1,9 @@
-import Valdat from './Valdat';
-import ValidateString from './ValidateString';
-import ValidateNumber from './ValidateNumber';
-import ValidateObject from './ValidateObject';
-import ValidateArray from './ValidateArray';
-import ValidateEnum from './ValidateEnum';
+import Valdat from './valdat/Valdat';
+import ValidateString from './valdat/ValidateString';
+import ValidateNumber from './valdat/ValidateNumber';
+import ValidateObject from './valdat/ValidateObject';
+import ValidateArray from './valdat/ValidateArray';
+import ValidateEnum from './valdat/ValidateEnum';
 
 Valdat.register('string', () => new ValidateString().string);
 Valdat.register('number', () => new ValidateNumber().number);
