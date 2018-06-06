@@ -20,6 +20,10 @@
     "validate-react"
   ],
   "author": "Vijay Dev <vijaydev.in@gmail.com> (http://vijaydev.com/)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamvijaydev/valdat.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^22.2.3",
