@@ -4,7 +4,7 @@ import {
     IData,
     IValidator
 } from './interface/common';
-import { IValidateNumber } from './interface/IValidateNumber'
+import { IValidateNumber } from './interface/IValidateNumber';
 import Validate from './Validate';
 
 export default class ValidateNumber extends Validate implements IValidateNumber {

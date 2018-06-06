@@ -1,11 +1,16 @@
-import Validate, { IData } from './Validate';
+import {
+    IData,
+    IValidator
+} from './interface/common';
+import { IValidateEnum } from './interface/IValidateEnum';
+import Validate from './Validate';
 
-export default class ValidateEnum extends Validate {
+export default class ValidateEnum extends Validate implements IValidateEnum {
     constructor() {
         super();
     }
 
-    private oneOfFactory(types: any[]) {
+    private oneOfFactory(types: any[]): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -25,7 +30,7 @@ export default class ValidateEnum extends Validate {
         return validator;
     }
 
-    private oneOfTypeFactory(types: Function[]) {
+    private oneOfTypeFactory(types: Function[]): IValidator {
         const validator =  (data: IData, key: string) => {
             const value = data[key];
             const match = types.some((validatorFn) => {
