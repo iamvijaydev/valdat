@@ -1,13 +1,18 @@
 import isArray from 'lodash/isArray';
 
-import Validate, { IData } from './Validate';
+import {
+    IData,
+    IValidator
+} from './interface/common';
+import { IValidateArray } from './interface/IValidateArray'
+import Validate from './Validate';
 
-export default class ValidateArray extends Validate {
+export default class ValidateArray extends Validate implements IValidateArray {
     constructor() {
         super();
     }
 
-    private arrayFactory() {
+    private arrayFactory(): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -32,7 +37,7 @@ export default class ValidateArray extends Validate {
         return validator;
     }
 
-    private notEmptyFactory() {
+    private notEmptyFactory(): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -52,7 +57,7 @@ export default class ValidateArray extends Validate {
         return validator;
     }
 
-    private ofFactory(type: Function) {
+    private ofFactory(type: Function): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             const match = value.some((item: any) => {
