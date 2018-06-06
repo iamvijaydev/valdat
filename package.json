@@ -2,8 +2,8 @@
   "name": "valdat",
   "version": "0.4.2",
   "description": "A modern day validator for the masses",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/Valdat.js",
+  "types": "dist/Valdat.d.ts",
   "scripts": {
     "setup": "npm install",
     "build": "tsc",
