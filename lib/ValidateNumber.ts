@@ -1,6 +1,9 @@
 import isNumber from 'lodash/isNumber';
 
-import { IData } from './interface/common';
+import {
+    IData,
+    IValidator
+} from './interface/common';
 import { IValidateNumber } from './interface/IValidateNumber'
 import Validate from './Validate';
 
@@ -9,7 +12,7 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
         super();
     }
 
-    private numberFatory() {
+    private numberFatory(): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -34,7 +37,7 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
         return validator;
     }
 
-    private minFatory(min: number) {
+    private minFatory(min: number): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -54,7 +57,7 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
         return validator;
     }
 
-    private maxFatory(max: number) {
+    private maxFatory(max: number): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;

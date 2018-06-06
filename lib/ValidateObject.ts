@@ -1,13 +1,18 @@
 import isObject from 'lodash/isObject';
 
-import Validate, { IData } from './Validate';
+import {
+    IData,
+    IValidator
+} from './interface/common';
+import { IValidateObject } from './interface/IValidateObject'
+import Validate from './Validate';
 
-export default class ValidateObject extends Validate {
+export default class ValidateObject extends Validate implements IValidateObject {
     constructor() {
         super();
     }
 
-    private objectFatory() {
+    private objectFatory(): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -32,7 +37,7 @@ export default class ValidateObject extends Validate {
         return validator;
     }
 
-    private shapeFactory(shape: IData) {
+    private shapeFactory(shape: IData): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
