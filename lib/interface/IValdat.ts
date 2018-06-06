@@ -1,6 +1,9 @@
 import { IData } from './common';
 import { IValidateString } from './IValidateString';
 import { IValidateNumber } from './IValidateNumber';
+import { IValidateObject } from './IValidateObject';
+import { IValidateArray } from './IValidateArray';
+import { IValidateEnum } from './IValidateEnum';
 
 export interface IValdat {
     check(schema: IData, data: IData): {
@@ -13,8 +16,8 @@ export interface IValdat {
     };
     string(): IValidateString;
     number(): IValidateNumber;
-    object(): IValidateString;
-    array(): IValidateString;
-    enum(): IValidateString;
+    object(): IValidateObject;
+    array(): IValidateArray;
+    enum(): IValidateEnum;
     [propName: string]: Function;
 }
