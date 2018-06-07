@@ -9,7 +9,7 @@
     "setup": "npm install",
     "build": "tsc",
     "test": "jest",
-    "clean": "shx rm -rf dist/* docs/*",
+    "clean": "shx rm -rf dist/* docs/* && shx echo Cleaned",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./lib/",
     "posttypedoc": "shx cp .nojekyll docs/.nojekyll"
   },
@@ -27,16 +27,6 @@
     "url": "git+https://github.com/iamvijaydev/valdat.git"
   },
   "license": "ISC",
-  "devDependencies": {
-    "@types/jest": "^22.2.3",
-    "@types/lodash": "^4.14.109",
-    "jest": "^23.1.0",
-    "lodash": "^4.17.10",
-    "shx": "^0.2.2",
-    "ts-jest": "^22.4.6",
-    "typedoc": "^0.11.1",
-    "typescript": "^2.9.1"
-  },
   "jest": {
     "transform": {
       "^.+\\.ts?$": "ts-jest"
@@ -48,5 +38,17 @@
       "json",
       "node"
     ]
+  },
+  "dependencies": {
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.0.0",
+    "@types/lodash": "^4.14.109",
+    "jest": "^23.1.0",
+    "shx": "^0.2.2",
+    "ts-jest": "^22.4.6",
+    "typedoc": "^0.11.1",
+    "typescript": "^2.9.1"
   }
 }
