@@ -1,37 +1,37 @@
-import Valdat from '../lib'
+import valdat from '../lib/valdat'
 
-describe('Valdat.check:', () => {
+describe('valdat.check:', () => {
     test('To be defined', () => {
-        expect(Valdat.check).toBeDefined();
+        expect(valdat.check).toBeDefined();
     });
     
     test('Called with no arguments pass validation', () => {
-        expect(Valdat.check()).toEqual({
+        expect(valdat.check(undefined, undefined)).toEqual({
             isValid: true,
             errors: {},
         });
     });
 });
 
-describe('Valdat.register:', () => {
+describe('valdat.register:', () => {
     test('To be defined', () => {
-        expect(Valdat.register).toBeDefined();
+        expect(valdat.register).toBeDefined();
     });
     
     test('Throw error when name is NOT provided', () => {
         expect(() => {
-            Valdat.register();
+            valdat.register(undefined, undefined);
         }).toThrow('Register expects');
     });
     
     test('Throw error when INCORRECT method is provided', () => {
         expect(() => {
-            Valdat.register('name', {});
+            valdat.register('name', undefined);
         }).toThrow('Register expects');
     });
 
     test('Properly registers a method', () => {
-        Valdat.register('sayMyName', () => ({
+        valdat.register('sayMyName', () => ({
             stack: [(data, key) => ({
                 error: false,
                 message: '',
@@ -39,27 +39,27 @@ describe('Valdat.register:', () => {
             required: false,
         }));
 
-        expect(Valdat).toHaveProperty('sayMyName', expect.any(Function));
+        expect(valdat).toHaveProperty('sayMyName', expect.any(Function));
         expect({
-            name: Valdat.sayMyName(),
+            name: valdat.sayMyName(),
         }).toHaveProperty('name', expect.any(Object));
     });
 });
 
-describe('Valdat.custom:', () => {
+describe('valdat.custom:', () => {
     test('To be defined', () => {
-        expect(Valdat.custom).toBeDefined();
+        expect(valdat.custom).toBeDefined();
     });
 
     test('Throw error when NO validator is provided', () => {
         expect(() => {
-            Valdat.custom();
+            valdat.custom(undefined);
         }).toThrow('Custom expects');
     });
 
     test('Throw error when INCORRECT validator is provided', () => {
         expect(() => {
-            Valdat.custom({});
+            valdat.custom(undefined);
         }).toThrow('Custom expects');
     });
 
@@ -70,7 +70,7 @@ describe('Valdat.custom:', () => {
                 message: '',
             }
         };
-        const schema = Valdat.custom(validator);
+        const schema = valdat.custom(validator);
 
         expect(schema).toHaveProperty('stack', expect.any(Array));
         expect(schema.stack[0]).toEqual(validator);
