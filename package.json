@@ -3,6 +3,7 @@
   "version": "0.8.0",
   "description": "A modern day validator for the masses",
   "main": "dist/valdat.js",
+  "module": "lib/valdat.ts",
   "types": "dist/valdat.d.ts",
   "scripts": {
     "setup": "npm install",
