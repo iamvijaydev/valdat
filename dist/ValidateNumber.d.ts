@@ -1,18 +1,10 @@
-import Validate, { IData } from './Validate';
-export default class ValidateNumber extends Validate {
+import { IValidateNumber } from './interface/IValidateNumber';
+import Validate from './Validate';
+export default class ValidateNumber extends Validate implements IValidateNumber {
     constructor();
-    numberFatory(): (data: IData, key: string) => {
-        error: boolean;
-        message: string;
-    };
-    minFatory(min: number): (data: IData, key: string) => {
-        error: boolean;
-        message: string;
-    };
-    maxFatory(max: number): (data: IData, key: string) => {
-        error: boolean;
-        message: string;
-    };
+    private numberFatory;
+    private minFatory;
+    private maxFatory;
     number(): ValidateNumber;
     min(min: number): ValidateNumber;
     max(max: number): ValidateNumber;

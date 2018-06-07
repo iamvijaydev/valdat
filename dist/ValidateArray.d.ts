@@ -1,19 +1,11 @@
-import Validate, { IData } from './Validate';
-export default class ValidateArray extends Validate {
+import { IValidateArray } from './interface/IValidateArray';
+import Validate from './Validate';
+export default class ValidateArray extends Validate implements IValidateArray {
     constructor();
-    arrayFatory(): (data: IData, key: string) => {
-        error: boolean;
-        message: string;
-    };
-    notEmptyFactory(): (data: IData, key: string) => {
-        error: boolean;
-        message: string;
-    };
-    ofFactory(type: Function): (data: IData, key: string) => {
-        error: any;
-        message: string;
-    };
+    private arrayFactory;
+    private notEmptyFactory;
+    private ofFactory;
     array(): ValidateArray;
     notEmpty(): ValidateArray;
-    of(type: Function): ValidateArray;
+    ofType(type: Function): ValidateArray;
 }

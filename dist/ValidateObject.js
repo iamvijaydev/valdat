@@ -13,14 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var isString_1 = __importDefault(require("lodash/isString"));
+var isObject_1 = __importDefault(require("lodash/isObject"));
 var Validate_1 = __importDefault(require("./Validate"));
-var ValidateString = /** @class */ (function (_super) {
-    __extends(ValidateString, _super);
-    function ValidateString() {
+var ValidateObject = /** @class */ (function (_super) {
+    __extends(ValidateObject, _super);
+    function ValidateObject() {
         return _super.call(this) || this;
     }
-    ValidateString.prototype.stringFatory = function () {
+    ValidateObject.prototype.objectFatory = function () {
         var _this = this;
         var validator = function (data, key) {
             var value = data[key];
@@ -32,9 +32,9 @@ var ValidateString = /** @class */ (function (_super) {
                     message = key + " is required, but its value is undefined.";
                 }
             }
-            else if (!isString_1.default(value)) {
+            else if (isObject_1.default(value)) {
                 error = true;
-                message = key + " should be string, recieved " + typeof value + ".";
+                message = key + " should be an object, recieved " + typeof value + ".";
             }
             return {
                 error: error,
@@ -43,14 +43,20 @@ var ValidateString = /** @class */ (function (_super) {
         };
         return validator;
     };
-    ValidateString.prototype.hasLenFatory = function (length) {
+    ValidateObject.prototype.shapeFactory = function (shape) {
         var validator = function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (value.length !== length) {
+            var matchFailed = Object.keys(shape)
+                .some(function (shapeKey) {
+                var validatorFn = shape[shapeKey];
+                var err = validatorFn(value, shapeKey).error;
+                return err;
+            });
+            if (matchFailed) {
                 error = true;
-                message = key + " should be of length " + length + ".";
+                message = "The data object does not matche the schema shape";
             }
             return {
                 error: error,
@@ -59,35 +65,15 @@ var ValidateString = /** @class */ (function (_super) {
         };
         return validator;
     };
-    ValidateString.prototype.regexFactory = function (regex) {
-        var validator = function (data, key) {
-            var value = data[key];
-            var error = false;
-            var message = '';
-            if (!regex.test(value)) {
-                error = true;
-                message = key + " does not match the regex " + regex + ".";
-            }
-            return {
-                error: error,
-                message: message,
-            };
-        };
-        return validator;
-    };
-    ValidateString.prototype.string = function () {
-        this.stack.push(this.stringFatory());
+    ValidateObject.prototype.object = function () {
+        this.stack.push(this.objectFatory());
         return this;
     };
-    ValidateString.prototype.hasLen = function (length) {
-        this.stack.push(this.hasLenFatory(length));
+    ValidateObject.prototype.shape = function (shape) {
+        this.stack.push(this.shapeFactory(shape));
         return this;
     };
-    ValidateString.prototype.matchRegex = function (regex) {
-        this.stack.push(this.regexFactory(regex));
-        return this;
-    };
-    return ValidateString;
+    return ValidateObject;
 }(Validate_1.default));
-exports.default = ValidateString;
-//# sourceMappingURL=ValidateString.js.map
+exports.default = ValidateObject;
+//# sourceMappingURL=ValidateObject.js.map

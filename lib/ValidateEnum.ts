@@ -5,6 +5,11 @@ import {
 import { IValidateEnum } from './interface/IValidateEnum';
 import Validate from './Validate';
 
+// export interface IValidateEnum extends IOneOf, IOneOfType {
+//     oneOf(types: any[]): IValidateEnum;
+//     oneOfType(types: Function[]): IValidateEnum;
+// }
+
 export default class ValidateEnum extends Validate implements IValidateEnum {
     constructor() {
         super();
@@ -50,12 +55,12 @@ export default class ValidateEnum extends Validate implements IValidateEnum {
         return validator;
     }
 
-    oneOf(types: any[]) {
+    oneOf(types: any[]): IValidateEnum {
         this.stack.push(this.oneOfFactory(types));
         return this;
     }
 
-    oneOfType(types: Function[]) {
+    oneOfType(types: Function[]): IValidateEnum {
         this.stack.push(this.oneOfTypeFactory(types));
         return this;
     }

@@ -1,6 +1,6 @@
 # valdat
 
-A modern-day validator for the masses, designed for ease of use. Its design is heavily influenced by prop-type and Joi. Although, not as exhaustive as Joi.
+A modern-day validator for the masses, designed for ease of use. Its design is heavily influenced by [prop-type](https://github.com/facebook/prop-types) and [Joi](https://github.com/hapijs/joi). Although, not as exhaustive as Joi.
 
 Let's explore an React example first:
 ```javascript

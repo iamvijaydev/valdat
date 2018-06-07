@@ -1,14 +1,9 @@
-import Validate, { IData } from './Validate';
-export default class ValidateEnum extends Validate {
+import { IValidateEnum } from './interface/IValidateEnum';
+import Validate from './Validate';
+export default class ValidateEnum extends Validate implements IValidateEnum {
     constructor();
-    oneOfFactory(types: any[]): (data: IData, key: string) => {
-        error: boolean;
-        message: string;
-    };
-    oneOfTypeFactory(types: Function[]): (data: IData, key: string) => {
-        error: boolean;
-        message: string;
-    };
-    oneOf(types: any[]): this;
-    oneOfType(types: Function[]): this;
+    private oneOfFactory;
+    private oneOfTypeFactory;
+    oneOf(types: any[]): IValidateEnum;
+    oneOfType(types: Function[]): IValidateEnum;
 }

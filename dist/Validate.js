@@ -7,7 +7,6 @@ var Validate = /** @class */ (function () {
     }
     Validate.prototype.isRequired = function () {
         this.required = true;
-        return this;
     };
     return Validate;
 }());

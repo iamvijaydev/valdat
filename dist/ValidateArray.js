@@ -20,9 +20,9 @@ var ValidateArray = /** @class */ (function (_super) {
     function ValidateArray() {
         return _super.call(this) || this;
     }
-    ValidateArray.prototype.arrayFatory = function () {
+    ValidateArray.prototype.arrayFactory = function () {
         var _this = this;
-        return function (data, key) {
+        var validator = function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
@@ -41,9 +41,10 @@ var ValidateArray = /** @class */ (function (_super) {
                 message: message,
             };
         };
+        return validator;
     };
     ValidateArray.prototype.notEmptyFactory = function () {
-        return function (data, key) {
+        var validator = function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
@@ -56,9 +57,10 @@ var ValidateArray = /** @class */ (function (_super) {
                 message: message,
             };
         };
+        return validator;
     };
     ValidateArray.prototype.ofFactory = function (type) {
-        return function (data, key) {
+        var validator = function (data, key) {
             var value = data[key];
             var match = value.some(function (item) {
                 var err = type({ check: item }, 'check').error;
@@ -71,16 +73,17 @@ var ValidateArray = /** @class */ (function (_super) {
                 message: message,
             };
         };
+        return validator;
     };
     ValidateArray.prototype.array = function () {
-        this.stack.push(this.arrayFatory());
+        this.stack.push(this.arrayFactory());
         return this;
     };
     ValidateArray.prototype.notEmpty = function () {
         this.stack.push(this.notEmptyFactory());
         return this;
     };
-    ValidateArray.prototype.of = function (type) {
+    ValidateArray.prototype.ofType = function (type) {
         this.stack.push(this.ofFactory(type));
         return this;
     };

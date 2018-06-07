@@ -14,13 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Validate_1 = __importDefault(require("./Validate"));
+// export interface IValidateEnum extends IOneOf, IOneOfType {
+//     oneOf(types: any[]): IValidateEnum;
+//     oneOfType(types: Function[]): IValidateEnum;
+// }
 var ValidateEnum = /** @class */ (function (_super) {
     __extends(ValidateEnum, _super);
     function ValidateEnum() {
         return _super.call(this) || this;
     }
     ValidateEnum.prototype.oneOfFactory = function (types) {
-        return function (data, key) {
+        var validator = function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
@@ -33,12 +37,13 @@ var ValidateEnum = /** @class */ (function (_super) {
                 message: message,
             };
         };
+        return validator;
     };
     ValidateEnum.prototype.oneOfTypeFactory = function (types) {
-        return function (data, key) {
+        var validator = function (data, key) {
             var value = data[key];
-            var match = types.some(function (item) {
-                var err = item(data, key).error;
+            var match = types.some(function (validatorFn) {
+                var err = validatorFn(data, key).error;
                 return !err;
             });
             var error = !match;
@@ -48,6 +53,7 @@ var ValidateEnum = /** @class */ (function (_super) {
                 message: message,
             };
         };
+        return validator;
     };
     ValidateEnum.prototype.oneOf = function (types) {
         this.stack.push(this.oneOfFactory(types));

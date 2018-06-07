@@ -22,7 +22,7 @@ var ValidateNumber = /** @class */ (function (_super) {
     }
     ValidateNumber.prototype.numberFatory = function () {
         var _this = this;
-        return function (data, key) {
+        var validator = function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
@@ -41,9 +41,10 @@ var ValidateNumber = /** @class */ (function (_super) {
                 message: message,
             };
         };
+        return validator;
     };
     ValidateNumber.prototype.minFatory = function (min) {
-        return function (data, key) {
+        var validator = function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
@@ -56,9 +57,10 @@ var ValidateNumber = /** @class */ (function (_super) {
                 message: message,
             };
         };
+        return validator;
     };
     ValidateNumber.prototype.maxFatory = function (max) {
-        return function (data, key) {
+        var validator = function (data, key) {
             var value = data[key];
             var error = false;
             var message = '';
@@ -71,6 +73,7 @@ var ValidateNumber = /** @class */ (function (_super) {
                 message: message,
             };
         };
+        return validator;
     };
     ValidateNumber.prototype.number = function () {
         this.stack.push(this.numberFatory());
