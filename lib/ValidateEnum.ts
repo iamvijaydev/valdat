@@ -50,10 +50,6 @@ export default class ValidateEnum extends Validate implements IValidateEnum {
         return validator;
     }
 
-    enum() {
-        return this;
-    }
-
     oneOf(types: any[]) {
         this.stack.push(this.oneOfFactory(types));
         return this;

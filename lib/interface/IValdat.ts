@@ -5,7 +5,7 @@ import { IValidateObject } from './IValidateObject';
 import { IValidateArray } from './IValidateArray';
 import { IValidateEnum } from './IValidateEnum';
 
-export interface IValdat {
+export interface Ivaldat {
     check(schema: IData, data: IData): {
         isValid: boolean;
         errors: IData;

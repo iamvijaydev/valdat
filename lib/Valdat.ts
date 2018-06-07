@@ -1,14 +1,16 @@
 import isFunction from 'lodash/isFunction';
 
 import { IData } from './interface/common';
-import { IValdat } from './interface/IValdat';
+import { Ivaldat } from './interface/Ivaldat';
+import Validate from './Validate';
 import ValidateString from './ValidateString';
 import ValidateNumber from './ValidateNumber';
+import ValidateBoolean from './ValidateBoolean';
 import ValidateObject from './ValidateObject';
 import ValidateArray from './ValidateArray';
 import ValidateEnum from './ValidateEnum';
 
-const Valdat: IValdat = {
+const valdat: Ivaldat = {
     check: (schema = {}, data = {}) => {
         let isValid = true;
         let errors: IData = {};
@@ -44,8 +46,8 @@ const Valdat: IValdat = {
             throw new Error('Register expects the method to be function.')
         }
 
-        Valdat[name] = method;
-        return Valdat[name];
+        valdat[name] = method;
+        return valdat[name];
     },
     custom: (validator) => {
         if (!isFunction(validator)) {
@@ -56,9 +58,12 @@ const Valdat: IValdat = {
     },
     string: new ValidateString().string,
     number: new ValidateNumber().number,
+    boolean: new ValidateBoolean().boolean,
     object: new ValidateObject().object,
     array: new ValidateArray().array,
-    enum: new ValidateEnum().enum,
+    oneOf: new ValidateEnum().oneOf,
+    oneOfType: new ValidateEnum().oneOfType,
 };
 
-export { Valdat as default };
+export { Validate }
+export { valdat as default };

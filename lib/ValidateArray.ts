@@ -87,7 +87,7 @@ export default class ValidateArray extends Validate implements IValidateArray {
         return this;
     }
 
-    of(type: Function): ValidateArray {
+    ofType(type: Function): ValidateArray {
         this.stack.push(this.ofFactory(type));
         return this;
     }
