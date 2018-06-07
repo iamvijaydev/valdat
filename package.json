@@ -2,13 +2,13 @@
   "name": "valdat",
   "version": "0.8.0",
   "description": "A modern day validator for the masses",
-  "main": "dist/Valdat.js",
-  "types": "dist/Valdat.d.ts",
+  "main": "dist/valdat.js",
+  "types": "dist/valdat.d.ts",
   "scripts": {
     "setup": "npm install",
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "test": "jest",
-    "clean": "shx rm -rf node_modules/ dist/ docs/",
+    "clean": "shx rm -rf dist/ docs/",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./lib/",
     "posttypedoc": "shx cp .nojekyll docs/.nojekyll"
   },
@@ -17,7 +17,8 @@
     "valid",
     "validator",
     "validate",
-    "validate-react"
+    "validate form",
+    "validate react"
   ],
   "author": "Vijay Dev <vijaydev.in@gmail.com> (http://vijaydev.com/)",
   "repository": {

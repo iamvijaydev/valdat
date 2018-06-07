@@ -1,4 +1,4 @@
-import valdat from '../lib/valdat'
+import valdat from '../valdat';
 
 describe('valdat.check:', () => {
     test('To be defined', () => {

@@ -3,7 +3,8 @@ tsconfig.json
 .nojekyll
 lib/
 docs/
-__tests__/
+dist/__tests__/
+dist/interface/
 .npmignore
 
 // npm pack
