@@ -2,9 +2,9 @@
   "name": "valdat",
   "version": "0.8.1",
   "description": "A modern day validator for the masses",
-  "main": "dist/valdat.js",
-  "module": "lib/valdat.ts",
-  "types": "dist/valdat.d.ts",
+  "main": "dist/index.js",
+  "module": "lib/index.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "setup": "npm install",
     "build": "npm run clean && tsc",

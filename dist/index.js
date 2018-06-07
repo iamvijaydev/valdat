@@ -61,4 +61,4 @@ var valdat = {
     oneOfType: new ValidateEnum_1.default().oneOfType,
 };
 exports.default = valdat;
-//# sourceMappingURL=valdat.js.map
+//# sourceMappingURL=index.js.map
