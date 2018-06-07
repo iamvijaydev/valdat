@@ -10,6 +10,5 @@ export interface IValdat {
     custom(validator: Function): {
         stack: Function[];
     };
-    string(): IValidateString;
-    [propName: string]: Function;
+    string: { (): IValidateString };
 }
