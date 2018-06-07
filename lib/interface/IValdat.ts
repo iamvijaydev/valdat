@@ -10,5 +10,10 @@ export interface IValdat {
     custom(validator: Function): {
         stack: Function[];
     };
-    string: { (): IValidateString };
+    string(): IValidateString;
+    number(): IValidateString;
+    object(): IValidateString;
+    array(): IValidateString;
+    enum(): IValidateString;
+    [propName: string]: Function;
 }

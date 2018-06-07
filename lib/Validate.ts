@@ -1,4 +1,4 @@
-import { IValidate } from '../interface/IValidate';
+import { IValidate } from './interface/IValidate';
 
 export interface IData {
     [propName: string]: any

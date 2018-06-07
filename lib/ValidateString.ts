@@ -3,8 +3,8 @@ import isString from 'lodash/isString';
 import {
     IData,
     IValidator
-} from '../interface/common';
-import { IValidateString } from '../interface/IValidateString';
+} from './interface/common';
+import { IValidateString } from './interface/IValidateString';
 import Validate from './Validate';
 
 export default class ValidateString extends Validate implements IValidateString {
