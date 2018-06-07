@@ -7,9 +7,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "setup": "npm install",
-    "build": "npm run clean && tsc",
+    "build": "tsc",
     "test": "jest",
-    "clean": "shx rm -rf dist/ docs/",
+    "clean": "shx rm -rf dist/* docs/*",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./lib/",
     "posttypedoc": "shx cp .nojekyll docs/.nojekyll"
   },
