@@ -1,6 +1,6 @@
 {
   "name": "valdat",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A modern day validator for the masses",
   "main": "dist/valdat.js",
   "module": "lib/valdat.ts",
