@@ -1,9 +1,10 @@
 import isNumber from 'lodash/isNumber';
 
-import Validate, { IData } from './Validate';
-import ValidateObject from './ValidateObject';
+import { IData } from './interface/common';
+import { IValidateNumber } from './interface/IValidateNumber'
+import Validate from './Validate';
 
-export default class ValidateNumber extends Validate {
+export default class ValidateNumber extends Validate implements IValidateNumber {
     constructor() {
         super();
     }

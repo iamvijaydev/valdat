@@ -1,5 +1,6 @@
 import { IData } from './common';
 import { IValidateString } from './IValidateString';
+import { IValidateNumber } from './IValidateNumber';
 
 export interface IValdat {
     check(schema: IData, data: IData): {
@@ -11,7 +12,7 @@ export interface IValdat {
         stack: Function[];
     };
     string(): IValidateString;
-    number(): IValidateString;
+    number(): IValidateNumber;
     object(): IValidateString;
     array(): IValidateString;
     enum(): IValidateString;
