@@ -1,7 +1,8 @@
 import isFunction from 'lodash/isFunction';
 
-import { IData } from '../interface/IData';
+import { IData } from '../interface/common';
 import { IValdat } from '../interface/IValdat';
+import { IValidateString } from '../interface/IValidateString';
 
 const Valdat: IValdat = {
     check: (schema = {}, data = {}) => {

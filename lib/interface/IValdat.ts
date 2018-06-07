@@ -1,25 +1,15 @@
-import { IData } from './IData';
+import { IData } from './common';
+import { IValidateString } from './IValidateString';
 
-export interface ICheck {
-    (schema: IData, data: IData): {
+export interface IValdat {
+    check(schema: IData, data: IData): {
         isValid: boolean;
         errors: IData;
     };
-}
-
-export interface IRegister {
-    (name: string, method: Function): Function;
-}
-
-export interface ICustom {
-    (validator: Function): {
+    register(name: string, method: Function): Function;
+    custom(validator: Function): {
         stack: Function[];
     };
-}
-
-export interface IValdat {
-    check: ICheck;
-    register: IRegister;
-    custom: ICustom;
+    string(): IValidateString;
     [propName: string]: Function;
 }

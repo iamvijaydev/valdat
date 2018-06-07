@@ -32,7 +32,7 @@ export default class ValidateObject extends Validate {
         return validator;
     }
 
-    private keysFactory(shape: IData) {
+    private shapeFactory(shape: IData) {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -67,8 +67,8 @@ export default class ValidateObject extends Validate {
         return this;
     }
 
-    key(shape: IData): ValidateObject {
-        this.stack.push(this.keysFactory(shape));
+    shape(shape: IData): ValidateObject {
+        this.stack.push(this.shapeFactory(shape));
         return this;
     }
 }

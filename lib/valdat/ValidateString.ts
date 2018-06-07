@@ -1,13 +1,18 @@
 import isString from 'lodash/isString';
 
-import Validate, { IData } from './Validate';
+import {
+    IData,
+    IValidator
+} from '../interface/common';
+import { IValidateString } from '../interface/IValidateString';
+import Validate from './Validate';
 
-export default class ValidateString extends Validate {
+export default class ValidateString extends Validate implements IValidateString {
     constructor() {
         super();
     }
 
-    private stringFatory() {
+    private stringFatory(): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -32,7 +37,7 @@ export default class ValidateString extends Validate {
         return validator;
     }
 
-    private hasLenFatory(length: number) {
+    private hasLenFatory(length: number): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -52,7 +57,7 @@ export default class ValidateString extends Validate {
         return validator;
     }
 
-    private regexFactory(regex: RegExp) {
+    private regexFactory(regex: RegExp): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
