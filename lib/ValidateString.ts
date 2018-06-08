@@ -49,7 +49,10 @@ export default class ValidateString extends Validate implements IValidateString 
             let error = false;
             let message = '';
 
-            if (value.length !== length) {
+            if (!isString(value)) {
+                error = true;
+                message = `${key} should be a string to check it's length`;
+            } else if (value.length !== length) {
                 error = true;
                 message = `${key} should be of length ${length}.`;
             }
@@ -63,13 +66,16 @@ export default class ValidateString extends Validate implements IValidateString 
         return validator;
     }
 
-    private regexFactory(regex: RegExp): IValidator {
+    private matchRegexFactory(regex: RegExp): IValidator {
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (!regex.test(value)) {
+            if (!isString(value)) {
+                error = true;
+                message = `${key} should be a string to check it's length`;
+            } else if (!regex.test(value)) {
                 error = true;
                 message = `${key} does not match the regex ${regex}.`;
             }
@@ -94,7 +100,7 @@ export default class ValidateString extends Validate implements IValidateString 
     }
 
     matchRegex(regex: RegExp): ValidateString {
-        this.stack.push(this.regexFactory(regex));
+        this.stack.push(this.matchRegexFactory(regex));
         return this;
     }
 }
