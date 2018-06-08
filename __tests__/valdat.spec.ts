@@ -59,7 +59,7 @@ describe('valdat.custom:', () => {
 
     test('Throw error when INCORRECT validator is provided', () => {
         expect(() => {
-            valdat.custom(undefined);
+            valdat.custom((undefined as Function));
         }).toThrow('Custom expects');
     });
 
