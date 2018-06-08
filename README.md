@@ -198,7 +198,7 @@ class ValidateCat extends Validate {
     }
 };
 
-valdat.register('cat', new CatValidation().cat);
+valdat.register('cat', () => new CatValidation().cat());
 
 const schema = {
     prickle: valdat.cat().isLazy().isRequired()

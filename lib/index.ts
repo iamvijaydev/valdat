@@ -77,13 +77,13 @@ const valdat: Ivaldat = {
 
         return { stack: [validator] };
     },
-    string: new ValidateString().string,
-    number: new ValidateNumber().number,
-    boolean: new ValidateBoolean().boolean,
-    object: new ValidateObject().object,
-    array: new ValidateArray().array,
-    oneOf: new ValidateEnum().oneOf,
-    oneOfType: new ValidateEnum().oneOfType,
+    string: () => new ValidateString().string(),
+    number: () => new ValidateNumber().number(),
+    boolean: () => new ValidateBoolean().boolean(),
+    object: () => new ValidateObject().object(),
+    array: () => new ValidateArray().array(),
+    oneOf: (types) => new ValidateEnum().oneOf(types),
+    oneOfType: (types) => new ValidateEnum().oneOfType(types),
 };
 
 export { Validate }
