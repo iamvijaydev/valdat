@@ -45,11 +45,18 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
 
     private minFatory(min: number): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isNumber(min)) {
+                throw new Error('No min value provided while declaring schema with min.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (value < min) {
+            if (!isNumber(value)) {
+                error = true;
+                message = `${key} should be a number to compare with min`;
+            } else if (value < min) {
                 error = true;
                 message = `${key} should be greater than or equal to ${min}.`;
             }
@@ -65,11 +72,18 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
 
     private maxFatory(max: number): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isNumber(max)) {
+                throw new Error('No max value provided while declaring schema with max.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (value > max) {
+            if (!isNumber(value)) {
+                error = true;
+                message = `${key} should be a number to compare with max`;
+            } else if (value > max) {
                 error = true;
                 message = `${key} should be less than or equal to ${max}.`;
             }
