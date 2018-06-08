@@ -44,6 +44,10 @@ export default class ValidateObject extends Validate implements IValidateObject 
 
     private shapeFactory(shape: IData): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isObject(shape)) {
+                throw new Error('Incorrect/no shape value provided while declaring schema with `object().shape`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
@@ -60,7 +64,7 @@ export default class ValidateObject extends Validate implements IValidateObject 
 
             if (matchFailed) {
                 error = true;
-                message = `The data object does not matche the schema shape`;
+                message = `The data object does not match the schema shape`;
             }
 
             return {
