@@ -48,7 +48,7 @@ export default class ValidateString extends Validate implements IValidateString 
     private hasLenFatory(length: number): IValidator {
         const validator = (data: IData, key: string) => {
             if (!isNumber(length)) {
-                throw new Error('Incorrect/no length provided while declaring schema with `string().hasLen`.');
+                throw new Error('Incorrect/no `length` provided while declaring schema with `string().hasLen`.');
             }
 
             const value = data[key];
@@ -75,7 +75,7 @@ export default class ValidateString extends Validate implements IValidateString 
     private matchRegexFactory(regex: RegExp): IValidator {
         const validator = (data: IData, key: string) => {
             if (!isRegExp(regex)) {
-                throw new Error('Incorrect/no regex provided while declaring schema with `string().matchRegex`.');
+                throw new Error('Incorrect/no `regex` provided while declaring schema with `string().matchRegex`.');
             }
 
             const value = data[key];

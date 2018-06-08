@@ -1,5 +1,6 @@
 import isUndefined from 'lodash/isUndefined';
 import isArray from 'lodash/isArray';
+import isFunction from 'lodash/isFunction';
 
 import Validate, {
     IValidate,
@@ -63,8 +64,12 @@ export default class ValidateArray extends Validate implements IValidateArray {
         return validator;
     }
 
-    private ofFactory(type: Function): IValidator {
+    private ofTypeFactory(type: Function): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isFunction(type)) {
+                throw new Error('Incorrect/no `type` value provided while declaring schema with `array().ofType`.');
+            }
+
             const value = data[key];
             const match = value.some((item: any) => {
                 const { error: err } = type({ check: item }, 'check');
@@ -94,7 +99,7 @@ export default class ValidateArray extends Validate implements IValidateArray {
     }
 
     ofType(type: Function): ValidateArray {
-        this.stack.push(this.ofFactory(type));
+        this.stack.push(this.ofTypeFactory(type));
         return this;
     }
 }
