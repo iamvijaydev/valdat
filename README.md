@@ -86,7 +86,7 @@ That wasn't so bad was it? A similar flow can also be create for any of the popu
 All the `Validate<Type>` classes extends a `Validate` base class that provides the following:
 - `stack`: an array into to which the curried assertion functions are pushed
 - `required`: a boolean which will be set `true` if the `isRequired()` curry is called
-- `isRequired()`: if the assertion should expect a value. It should be called last, as it does not return `this`
+- `isRequired()`: if the assertion should expect a value
 
 When we call `valdat.check(schema, data)`, each item of schema is an instance of `Validate<Type>` class, meaning it has its own `this.stack`. `valdat.check` will loop through this stack and break as soon as an assertion fails. The assertion function always returns an object with `{ error: boolean, message: string }`, thus allowing us to do nested assertions, for eg: `valdat.array().ofType(valdat.string())` or `valdat.oneOfType([valdat.string(), valdat.number()])`
 

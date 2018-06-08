@@ -12,7 +12,7 @@ export interface IValidator {
 }
 
 export interface IValidate {
-    isRequired(): void;
+    isRequired(): IValidate;
 }
 
 export default class Validate implements IValidate {
@@ -24,7 +24,8 @@ export default class Validate implements IValidate {
         this.stack = [];
     }
 
-    isRequired(): void {
+    isRequired(): IValidate {
         this.required = true;
+        return this;
     }
 }
