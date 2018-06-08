@@ -1,3 +1,4 @@
+import isUndefined from 'lodash/isUndefined';
 import isArray from 'lodash/isArray';
 
 import Validate, {
@@ -23,7 +24,7 @@ export default class ValidateArray extends Validate implements IValidateArray {
             let error = false;
             let message = '';
 
-            if (value === null) {
+            if (isUndefined(value)) {
                 if (this.required) {
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
