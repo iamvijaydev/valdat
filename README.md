@@ -1,6 +1,8 @@
 # valdat
 
-A modern-day validator for the masses, designed for ease of use. Its design is heavily influenced by [prop-type](https://github.com/facebook/prop-types) and [Joi](https://github.com/hapijs/joi). Although, not as exhaustive as Joi.
+A modern-day validator for the masses, designed for ease of use. Its design is influenced by [prop-type](https://github.com/facebook/prop-types) and [Joi](https://github.com/hapijs/joi). Although, not as exhaustive as Joi.
+
+[![Build Status](https://travis-ci.org/iamvijaydev/valdat.svg?branch=master)](https://travis-ci.org/iamvijaydev/valdat) [![npm version](https://badge.fury.io/js/valdat.svg)](https://badge.fury.io/js/valdat)
 
 Let's explore an React example first:
 ```javascript
@@ -73,16 +75,22 @@ class User extends React.Component {
 That wasn't so bad was it? A similar flow can also be create for any of the popular frameworks.
 
 ## Features
------------
 1. Ability to curry (chain) multiple assertions
-2. Assertions fails fast, meaning it will stop checking if one of them fails
+2. Assertions [fail-fast](#fail-fast), meaning it will stop checking if one of them fails
 3. Returned `errors` object has the same shape as schema, with/without an error message. Very easy to update UI without much hassle
-4. Ability to add custom validator
-5. Ability to register custom validator
+4. Ability to add [custom validator](#custom)
+5. Ability to [register custom assertions](#register)
 6. Sufficient list of assertions (still growing)
 
+## Fail-fast
+All the `Validate<Type>` classes extends a `Validate` base class that provides the following:
+- `stack`: an array into to which the curried assertion functions are pushed
+- `required`: a boolean which will be set `true` if the `isRequired()` curry is called
+- `isRequired()`: if the assertion should expect a value. It should be called last, as it does not return `this`
+
+When we call `valdat.check(schema, data)`, each item of schema is an instance of `Validate<Type>` class, meaning it has its own `this.stack`. `valdat.check` will loop through this stack and break as soon as an assertion fails. The assertion function always returns an object with `{ error: boolean, message: string }`, thus allowing us to do nested assertions, for eg: `valdat.array().ofType(valdat.string())` or `valdat.oneOfType([valdat.string(), valdat.number()])`
+
 ## Installation
----------------
 ```shell
 npm install valdat --save
 ```
@@ -91,10 +99,19 @@ npm install valdat --save
 --------
 ```javascript
 import valdat from 'valdat';
+
+// to create custom assertion class
+import valdat { Validate } from 'valdat';
+
+// for typescript
+import valdat, {
+    Validate,
+    IValidate,
+    IValidator
+} from 'valdat';
 ```
 
 ## API - utility methods
-------------------------
 
 ## check
 Check the data against the schema. It will return an object with `isValid: boolean` and `errors: <SchemaShape>{}`.
@@ -106,7 +123,7 @@ const {
 ```
 
 ## custom
-Use a totally custom assertion function. There is not `isRequired()` in this case. It can be implemented within the custom assertion.
+Use a totally custom assertion function. There is not `isRequired()` in this case. It must be implemented within the custom assertion.
 ```javascript
 const schema = {
     password: valdat.custom((data, key) => {
@@ -120,6 +137,7 @@ const schema = {
             message = 'Should contain: minimum 8 letters, upper & lower letters, numbers, and special characters';
         }
 
+        // Important for assertion to work
         return {
             error,
             message
@@ -129,11 +147,11 @@ const schema = {
 ```
 
 ## register
-Imagine you reach a stage where your custom assertion requires its own currying, or it needs to be reused accross the application. then you can create a new `<Name>Validation` class that extends the base `Validation` class and register to `valdat` object literal. After that you can use your custom assertion anywhere.
+Imagine you reach a stage where your custom assertion requires its own currying, or it needs to be reused accross the application. Then you can create a new `Validate<Type>` class by extending the base `Validate` class and register to `valdat` object literal. After that you can use your custom assertion anywhere.
 ```javascript
-import valdat, { Validation } from 'valdat';
+import valdat, { Validate } from 'valdat';
 
-class CatValidation extends Validation {
+class ValidateCat extends Validate {
     constructor() {
         super();
     }
@@ -148,6 +166,7 @@ class CatValidation extends Validation {
                 }
             }
 
+            // Important for assertion to work
             return {
                 error: false,
                 message: ''
@@ -187,8 +206,7 @@ const schema = {
 ```
 
 ## API - assertion methods
---------------------------
-Each of the following methods are from their own `<Name>Validation` classes, which extends a base `Validation` that provides `.isRequired()`. The following methods returns `this`, allowing us to curry through the additional methods. The methods are added to `valdat` object literal for correct sequence access.
+Each of the following methods are from their own `Validate<Type>` classes, which extends the base class `Validate`, which provides `.isRequired()`. The following assertion methods returns `this`, allowing us to curry through the additional methods. The methods are included in `valdat` object literal for correct sequential access. [Register API](#register) does the same thing.
 
 ## string
 Checks if the value of the key in `data` is a string.
@@ -198,14 +216,14 @@ const schema = {
 };
 ```
 ## string.hasLen
-Checks if the string has a length of 5.
+Checks if this string has a length of 5.
 ```javascript
 const schema = {
     name: valdat.string().hasLen(5)
 };
 ```
 ## string.matchRegex
-Checks if the string matches the provided regex.
+Checks if this string matches the provided regex.
 ```javascript
 const schema = {
     name: valdat.string().matchRegex(/^Solo$/)
@@ -220,14 +238,14 @@ const schema = {
 };
 ```
 ## number.min
-Checks if the number has a minimum value of 18.
+Checks if this number has a minimum value of 18.
 ```javascript
 const schema = {
     age: valdat.number().min(18)
 };
 ```
 ## number.max
-Checks if the number has a maximum value of 30.
+Checks if this number has a maximum value of 30.
 ```javascript
 const schema = {
     age: valdat.number().max(30)
@@ -250,7 +268,7 @@ const schema = {
 };
 ```
 ## object.shape
-Checks if the object has the exact shape as provided.
+Checks if this object has the exact shape as provided.
 ```javascript
 const schema = {
     preference: valdat.object().shape({
@@ -268,14 +286,14 @@ const schema = {
 };
 ```
 ## array.notEmpty
-Checks if the array is not empty.
+Checks if this array is not empty.
 ```javascript
 const schema = {
     languages: valdat.array().notEmpty()
 };
 ```
 ## array.ofType
-Checks if the array contains the specified type.
+Checks if each item in this array contains the specified type.
 ```javascript
 const schema = {
     languages: valdat.array().ofType(valdat.string())
@@ -283,12 +301,15 @@ const schema = {
 ```
 
 ## oneOf (enum)
+Checks if the value of the key in `data` exactly matches one the provided enums values
 ```javascript
 const schema = {
     sex: valdat.oneOf(['Male', 'Female', 'Other'])
 };
 ```
+
 ## oneOfType (enum)
+Checks if the value of the key in `data` exactly matches one the provided enums types
 ```javascript
 const schema = {
     nationality: valdat.oneOfType([

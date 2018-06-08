@@ -2,11 +2,13 @@ export interface IData {
     [propName: string]: any
 }
 
+export interface IError {
+    error: boolean;
+    message: string;
+}
+
 export interface IValidator {
-    (data: IData, key: string): {
-        error: boolean;
-        message: string;
-    }
+    (data: IData, key: string): IError;
 }
 
 export interface IValidate {

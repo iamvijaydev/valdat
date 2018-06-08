@@ -87,4 +87,6 @@ const valdat: Ivaldat = {
 };
 
 export { Validate }
+export { IValidate }
+export { IValidator }
 export { valdat as default };
