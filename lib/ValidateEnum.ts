@@ -1,4 +1,7 @@
 import isUndefined from 'lodash/isUndefined';
+import isArray from 'lodash/isArray';
+import isFunction from 'lodash/isFunction';
+
 import Validate, {
     IValidate,
     IData,
@@ -17,6 +20,12 @@ export default class ValidateEnum extends Validate implements IValidateEnum {
 
     private oneOfFactory(types: any[]): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isArray(types)) {
+                throw new Error('Incorrect/no `types` value provided while declaring schema with `oneOf`.');
+            } else if (types.length) {
+                throw new Error('Empty array `types` is not allowed while declaring schema with `oneOf`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
@@ -42,6 +51,12 @@ export default class ValidateEnum extends Validate implements IValidateEnum {
 
     private oneOfTypeFactory(types: Function[]): IValidator {
         const validator =  (data: IData, key: string) => {
+            if (!isArray(types)) {
+                throw new Error('Incorrect/no `types` value provided while declaring schema with `oneOfType`.');
+            } else if (types.length) {
+                throw new Error('Empty array `types` is not allowed while declaring schema with `oneOfType`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
@@ -52,7 +67,11 @@ export default class ValidateEnum extends Validate implements IValidateEnum {
                     message = `${key} is required, but its value is undefined.`;
                 }
             } else {
-                const match = types.some((validatorFn) => {
+                const match = types.some((validatorFn, index) => {
+                    if (!isFunction(validatorFn)) {
+                        throw new Error(`Incorrect \`validatorFn\` found at ${index} of \`types\` in schema with \`oneOfType\`.`);
+                    }
+
                     const { error: err } = validatorFn(data, key);
 
                     return !err;
