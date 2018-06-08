@@ -1,5 +1,7 @@
 import isUndefined from 'lodash/isUndefined';
 import isString from 'lodash/isString';
+import isNumber from 'lodash/isNumber';
+import isRegExp from 'lodash/isRegExp';
 
 import Validate, {
     IValidate,
@@ -45,6 +47,10 @@ export default class ValidateString extends Validate implements IValidateString 
 
     private hasLenFatory(length: number): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isNumber(length)) {
+                throw new Error('No length provided while declaring schema with hasLen.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
@@ -68,13 +74,17 @@ export default class ValidateString extends Validate implements IValidateString 
 
     private matchRegexFactory(regex: RegExp): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isRegExp(regex)) {
+                throw new Error('No regex provided while declaring schema with matchRegex.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
 
             if (!isString(value)) {
                 error = true;
-                message = `${key} should be a string to check it's length`;
+                message = `${key} should be a string to match regex.`;
             } else if (!regex.test(value)) {
                 error = true;
                 message = `${key} does not match the regex ${regex}.`;
