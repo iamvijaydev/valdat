@@ -1,0 +1,458 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>valdat</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">valdat</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> valdat</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="valdat">valdat</h1>
+				<p>A modern-day validator for the masses, designed for ease of use. Its design is influenced by <a href="https://github.com/facebook/prop-types">prop-type</a> and <a href="https://github.com/hapijs/joi">Joi</a>. Although, not as exhaustive as Joi.</p>
+				<p><a href="https://travis-ci.org/iamvijaydev/valdat"><img src="https://travis-ci.org/iamvijaydev/valdat.svg?branch=master" alt="Build Status"></a> <a href="https://badge.fury.io/js/valdat"><img src="https://badge.fury.io/js/valdat.svg" alt="npm version"></a></p>
+				<p>Let&#39;s explore an React example first:</p>
+				<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+    state = {
+        <span class="hljs-attr">name</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">nameMessage</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">sex</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">sexMessage</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">age</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">ageMessage</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">languages</span>: [],
+        <span class="hljs-attr">languagesMessage</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">preference</span>: {},
+        <span class="hljs-attr">preferenceMessage</span>: <span class="hljs-string">''</span>
+    }
+
+    onSubmit = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+
+        <span class="hljs-comment">// create data object</span>
+        <span class="hljs-keyword">const</span> {
+            name,
+            sex,
+            age,
+            languages,
+            preference
+        } = <span class="hljs-keyword">this</span>.state;
+        <span class="hljs-keyword">const</span> data = {
+            name,
+            sex,
+            age,
+            languages,
+            preference
+        };
+
+        <span class="hljs-comment">// create schema object</span>
+        <span class="hljs-keyword">const</span> schema = {
+            <span class="hljs-attr">name</span>: valdat.string().isRequired(),
+            <span class="hljs-attr">sex</span>: valdat.oneOf([<span class="hljs-string">'Male'</span>, <span class="hljs-string">'Female'</span>, <span class="hljs-string">'Other'</span>]),
+            <span class="hljs-attr">age</span>: valdat.number().min(<span class="hljs-number">18</span>).isRequired(),
+            <span class="hljs-attr">languages</span>: valdat.array().notEmpty().ofType(valdat.string()),
+            <span class="hljs-attr">preference</span>: valdat.object().shape({
+                <span class="hljs-attr">email</span>: valdat.boolean().isRequired(),
+                <span class="hljs-attr">theme</span>: valdat.string().isRequired()
+            }).isRequired()
+        };
+
+        <span class="hljs-comment">// check if data matches schema</span>
+        <span class="hljs-keyword">const</span> {
+            isValid,
+            errors
+        } = valdat.check(schema, data);
+
+        <span class="hljs-comment">// reduce the error messages and update error messages</span>
+        <span class="hljs-comment">// this can also clear existing error messages</span>
+        <span class="hljs-keyword">const</span> errorMsgs = <span class="hljs-built_in">Object</span>.keys(errors)
+            .reduce(<span class="hljs-function">(<span class="hljs-params">msgs, key</span>) =&gt;</span> ({
+                ...msgs,
+                [<span class="hljs-string">`<span class="hljs-subst">${key}</span>Message`</span>]: errors[key]
+            }), {});
+        <span class="hljs-keyword">this</span>.setState({ ...errorMsgs });
+
+        <span class="hljs-comment">// if the data is okay</span>
+        <span class="hljs-keyword">if</span> (isValid) {
+            <span class="hljs-comment">// call api to submit</span>
+        }
+    }
+}
+</code></pre>
+				<p>That wasn&#39;t so bad was it? A similar flow can also be create for any of the popular frameworks.</p>
+				<h2 id="features">Features</h2>
+				<ol>
+					<li>Ability to curry (chain) multiple assertions</li>
+					<li>Assertions <a href="#fail-fast">fail-fast</a>, meaning it will stop checking if one of them fails</li>
+					<li>Returned <code>errors</code> object has the same shape as schema, with/without an error message. Very easy to update UI without much hassle</li>
+					<li>Ability to add <a href="#custom">custom validator</a></li>
+					<li>Ability to <a href="#register">register custom assertions</a></li>
+					<li>Sufficient list of assertions (still growing)</li>
+				</ol>
+				<h2 id="fail-fast">Fail-fast</h2>
+				<p>All the <code>Validate&lt;Type&gt;</code> classes extends a <code>Validate</code> base class that provides the following:</p>
+				<ul>
+					<li><code>stack</code>: an array into to which the curried assertion functions are pushed</li>
+					<li><code>required</code>: a boolean which will be set <code>true</code> if the <code>isRequired()</code> curry is called</li>
+					<li><code>isRequired()</code>: if the assertion should expect a value</li>
+				</ul>
+				<p>When we call <code>valdat.check(schema, data)</code>, each item of schema is an instance of <code>Validate&lt;Type&gt;</code> class, meaning it has its own <code>this.stack</code>. <code>valdat.check</code> will loop through this stack and break as soon as an assertion fails. The assertion function always returns an object with <code>{ error: boolean, message: string }</code>, thus allowing us to do nested assertions, for eg: <code>valdat.array().ofType(valdat.string())</code> or <code>valdat.oneOfType([valdat.string(), valdat.number()])</code></p>
+				<h2 id="installation">Installation</h2>
+				<pre><code class="lang-shell">npm install valdat --save
+</code></pre>
+				<h2 id="usage">Usage</h2>
+				<hr>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> valdat <span class="hljs-keyword">from</span> <span class="hljs-string">'valdat'</span>;
+
+<span class="hljs-comment">// to create custom assertion class</span>
+<span class="hljs-keyword">import</span> valdat { Validate } <span class="hljs-keyword">from</span> <span class="hljs-string">'valdat'</span>;
+
+<span class="hljs-comment">// for typescript</span>
+<span class="hljs-keyword">import</span> valdat, {
+    Validate,
+    IValidate,
+    IValidator
+} <span class="hljs-keyword">from</span> <span class="hljs-string">'valdat'</span>;
+</code></pre>
+				<h2 id="api-utility-methods">API - utility methods</h2>
+				<h2 id="check">check</h2>
+				<p>Check the data against the schema. It will return an object with <code>isValid: boolean</code> and <code>errors: &lt;SchemaShape&gt;{}</code>.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> {
+    isValid,
+    errors
+} = valdat.check(schema, data);
+</code></pre>
+				<h2 id="custom">custom</h2>
+				<p>Use a totally custom assertion function. There is not <code>isRequired()</code> in this case. It must be implemented within the custom assertion.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">password</span>: valdat.custom(<span class="hljs-function">(<span class="hljs-params">data, key</span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> regex = <span class="hljs-regexp">/^[\w&amp;.-]+$/</span>;
+        <span class="hljs-keyword">const</span> value = data[key];
+        <span class="hljs-keyword">let</span> error = <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">let</span> message = <span class="hljs-string">''</span>;
+
+        <span class="hljs-keyword">if</span> (!regex.test(value)) {
+            error = <span class="hljs-literal">true</span>;
+            message = <span class="hljs-string">'Should contain: minimum 8 letters, upper &amp; lower letters, numbers, and special characters'</span>;
+        }
+
+        <span class="hljs-comment">// Important for assertion to work</span>
+        <span class="hljs-keyword">return</span> {
+            error,
+            message
+        }
+    }),
+}
+</code></pre>
+				<h2 id="register">register</h2>
+				<p>Imagine you reach a stage where your custom assertion requires its own currying, or it needs to be reused accross the application. Then you can create a new <code>Validate&lt;Type&gt;</code> class by extending the base <code>Validate</code> class and register to <code>valdat</code> object literal. After that you can use your custom assertion anywhere.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> valdat, { Validate } <span class="hljs-keyword">from</span> <span class="hljs-string">'valdat'</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ValidateCat</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Validate</span> </span>{
+    <span class="hljs-keyword">constructor</span>() {
+        <span class="hljs-keyword">super</span>();
+    }
+    cat() {
+        <span class="hljs-keyword">this</span>.stack.push(<span class="hljs-function">(<span class="hljs-params">data, key</span>) =&gt;</span> {
+            <span class="hljs-keyword">const</span> value = data[key]
+
+            <span class="hljs-keyword">if</span> (!value || !value.cat) {
+                <span class="hljs-keyword">return</span> {
+                    <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">`<span class="hljs-subst">${key}</span> in data is not a cat.`</span>
+                }
+            }
+
+            <span class="hljs-comment">// Important for assertion to work</span>
+            <span class="hljs-keyword">return</span> {
+                <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+            }
+        });
+
+        <span class="hljs-comment">// Important for currying</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+    isLazy() {
+        <span class="hljs-keyword">this</span>.stack.push(<span class="hljs-function">(<span class="hljs-params">data, key</span>) =&gt;</span> {
+            <span class="hljs-keyword">const</span> value = data[key]
+
+            <span class="hljs-keyword">if</span> (value &amp;&amp; !value.isLazy) {
+                <span class="hljs-keyword">return</span> {
+                    <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">'The cat is not lazy.'</span>
+                }
+            }
+
+            <span class="hljs-keyword">return</span> {
+                <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+            }
+        });
+
+        <span class="hljs-comment">// Important for currying</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+};
+
+valdat.register(<span class="hljs-string">'cat'</span>, () =&gt; <span class="hljs-keyword">new</span> CatValidation().cat());
+
+<span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">prickle</span>: valdat.cat().isLazy().isRequired()
+};
+</code></pre>
+				<h2 id="api-assertion-methods">API - assertion methods</h2>
+				<p>Each of the following methods are from their own <code>Validate&lt;Type&gt;</code> classes, which extends the base class <code>Validate</code>, which provides <code>.isRequired()</code>. The following assertion methods returns <code>this</code>, allowing us to curry through the additional methods. The methods are included in <code>valdat</code> object literal for correct sequential access. <a href="#register">Register API</a> does the same thing.</p>
+				<h2 id="string">string</h2>
+				<p>Checks if the value of the key in <code>data</code> is a string.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">name</span>: valdat.string().isRequired()
+};
+</code></pre>
+				<h2 id="string-haslen">string.hasLen</h2>
+				<p>Checks if this string has a length of 5.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">name</span>: valdat.string().hasLen(<span class="hljs-number">5</span>)
+};
+</code></pre>
+				<h2 id="string-matchregex">string.matchRegex</h2>
+				<p>Checks if this string matches the provided regex.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">name</span>: valdat.string().matchRegex(<span class="hljs-regexp">/^Solo$/</span>)
+};
+</code></pre>
+				<h2 id="number">number</h2>
+				<p>Checks if the value of the key in <code>data</code> is a number.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">age</span>: valdat.number().isRequired()
+};
+</code></pre>
+				<h2 id="number-min">number.min</h2>
+				<p>Checks if this number has a minimum value of 18.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">age</span>: valdat.number().min(<span class="hljs-number">18</span>)
+};
+</code></pre>
+				<h2 id="number-max">number.max</h2>
+				<p>Checks if this number has a maximum value of 30.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">age</span>: valdat.number().max(<span class="hljs-number">30</span>)
+};
+</code></pre>
+				<h2 id="boolean">boolean</h2>
+				<p>Checks if the value of the key in <code>data</code> is a boolean.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">publicAccess</span>: valdat.boolean().isRequired()
+};
+</code></pre>
+				<h2 id="object">object</h2>
+				<p>Checks if the value of the key in <code>data</code> is an object.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">preference</span>: valdat.object().isRequired()
+};
+</code></pre>
+				<h2 id="object-shape">object.shape</h2>
+				<p>Checks if this object has the exact shape as provided.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">preference</span>: valdat.object().shape({
+        <span class="hljs-attr">email</span>: valdat.boolean().isRequired(),
+        <span class="hljs-attr">theme</span>: valdat.string().isRequired()
+    })
+};
+</code></pre>
+				<h2 id="array">array</h2>
+				<p>Checks if the value of the key in <code>data</code> is an array.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">languages</span>: valdat.array().isRequired()
+};
+</code></pre>
+				<h2 id="array-notempty">array.notEmpty</h2>
+				<p>Checks if this array is not empty.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">languages</span>: valdat.array().notEmpty()
+};
+</code></pre>
+				<h2 id="array-oftype">array.ofType</h2>
+				<p>Checks if each item in this array contains the specified type.</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">languages</span>: valdat.array().ofType(valdat.string())
+};
+</code></pre>
+				<h2 id="oneof-enum-">oneOf (enum)</h2>
+				<p>Checks if the value of the key in <code>data</code> exactly matches one the provided enums values</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">sex</span>: valdat.oneOf([<span class="hljs-string">'Male'</span>, <span class="hljs-string">'Female'</span>, <span class="hljs-string">'Other'</span>])
+};
+</code></pre>
+				<h2 id="oneoftype-enum-">oneOfType (enum)</h2>
+				<p>Checks if the value of the key in <code>data</code> exactly matches one the provided enums types</p>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> schema = {
+    <span class="hljs-attr">nationality</span>: valdat.oneOfType([
+        valdat.string(),
+        valdat.array()
+    ])
+};
+</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_validate_.html">"<wbr>Validate"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_validatearray_.html">"<wbr>Validate<wbr>Array"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_validateboolean_.html">"<wbr>Validate<wbr>Boolean"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_validateenum_.html">"<wbr>Validate<wbr>Enum"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_validatenumber_.html">"<wbr>Validate<wbr>Number"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_validateobject_.html">"<wbr>Validate<wbr>Object"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_validatestring_.html">"<wbr>Validate<wbr>String"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_index_.html">"index"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
