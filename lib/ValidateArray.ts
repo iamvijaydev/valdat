@@ -1,11 +1,16 @@
 import isArray from 'lodash/isArray';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateArray } from './interface/IValidateArray'
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateArray extends IValidate {
+    array(): IValidateArray;
+    notEmpty(): IValidateArray;
+    ofType(type: Function): IValidateArray;
+}
 
 export default class ValidateArray extends Validate implements IValidateArray {
     constructor() {

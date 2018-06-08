@@ -1,11 +1,16 @@
 import isNumber from 'lodash/isNumber';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateNumber } from './interface/IValidateNumber';
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateNumber extends IValidate {
+    number(): IValidateNumber;
+    min(min: number): IValidateNumber;
+    max(max: number): IValidateNumber;
+}
 
 export default class ValidateNumber extends Validate implements IValidateNumber {
     constructor() {

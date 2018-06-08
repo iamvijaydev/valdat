@@ -1,11 +1,14 @@
 import isBoolean from 'lodash/isBoolean';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateBoolean } from './interface/IValidateBoolean';
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateBoolean extends IValidate {
+    boolean(): IValidateBoolean;
+}
 
 export default class ValidateBoolean extends Validate implements IValidateBoolean {
     constructor() {

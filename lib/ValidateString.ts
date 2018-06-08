@@ -1,11 +1,16 @@
 import isString from 'lodash/isString';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateString } from './interface/IValidateString';
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateString extends IValidate {
+    string(): IValidateString;
+    hasLen(length: number): IValidateString;
+    matchRegex(regex: RegExp): IValidateString;
+}
 
 export default class ValidateString extends Validate implements IValidateString {
     constructor() {

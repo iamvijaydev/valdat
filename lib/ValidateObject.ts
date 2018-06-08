@@ -1,11 +1,15 @@
 import isObject from 'lodash/isObject';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateObject } from './interface/IValidateObject'
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateObject extends IValidate {
+    object(): IValidateObject;
+    shape(shape: IData): IValidateObject;
+}
 
 export default class ValidateObject extends Validate implements IValidateObject {
     constructor() {
