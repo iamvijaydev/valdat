@@ -1,3 +1,6 @@
+import isEqual from 'lodash/isEqual';
+import isString from 'lodash/isString';
+
 /**
  * Interface for generic object with string key an any value.
  */
@@ -38,6 +41,12 @@ export interface IValidator {
  */
 export interface IValidate {
     /**
+     * Checks if the value is same as that of the provided key.
+     * @returns "this" for currying.
+     */
+    sameAs(key: string): IValidate;
+
+    /**
      * Set "required" to true, indicating that the value to be validated should exist.
      * @returns "this" for currying.
      */
@@ -63,6 +72,41 @@ export default class Validate implements IValidate {
     constructor() {
         this.required = false;
         this.stack = [];
+    }
+
+    private sameAsFatory(otherKey: string): IValidator {
+        const validator = (data: IData, key: string) => {
+            if (!isString(length)) {
+                throw new Error('Incorrect/no `key` provided while declaring schema with `.sameAs`.');
+            }
+
+            const value = data[key];
+            const otherValue = data[otherKey];
+            let error = false;
+            let message = '';
+
+            if (!isEqual(value, otherValue)) {
+                if (this.required) {
+                    error = true;
+                    message = `The value of ${key} should be same as ${otherKey}`;
+                }
+            }
+
+            return {
+                error,
+                message,
+            };
+        };
+
+        return validator;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    sameAs(key : string): IValidate {
+        this.stack.push(this.sameAsFatory(key));
+        return this;
     }
 
     /**
