@@ -59,14 +59,14 @@ describe('valdat.number().min()', () => {
     });
 
     const schema = {
-        name: valdat.number().min(4)
+        age: valdat.number().min(4)
     }
     const schemaReq = {
-        name: valdat.number().min(4).isRequired()
+        age: valdat.number().min(4).isRequired()
     }
     const empty = {}
-    const incorrect = { name: 2 };
-    const correct = { name: 23 };
+    const incorrect = { age: 2 };
+    const correct = { age: 23 };
 
     test('Fails validation with no data', () => {
         const { isValid } = valdat.check(schema, empty);
@@ -111,14 +111,14 @@ describe('valdat.number().max()', () => {
     });
 
     const schema = {
-        name: valdat.number().max(25)
+        age: valdat.number().max(25)
     }
     const schemaReq = {
-        name: valdat.number().max(25).isRequired()
+        age: valdat.number().max(25).isRequired()
     }
     const empty = {}
-    const incorrect = { name: 27 };
-    const correct = { name: 23 };
+    const incorrect = { age: 27 };
+    const correct = { age: 23 };
 
     test('Fails validation with no data', () => {
         const { isValid } = valdat.check(schema, empty);

@@ -40,11 +40,11 @@ const valdat: Ivaldat = {
             .forEach((key) => {
                 const stack = schema[key].stack;
                 for (let i = 0, j = stack.length; i < j; i++) {
-                    const test = stack[i];
+                    const validatorFn = stack[i];
                     const {
                         error,
                         message
-                    } = test(data, key);
+                    } = validatorFn(data, key);
 
                     if (error) {
                         isValid = false;

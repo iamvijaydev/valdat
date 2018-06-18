@@ -1,6 +1,7 @@
 import isUndefined from 'lodash/isUndefined';
 import isObject from 'lodash/isObject';
 
+import { checkFast } from './utils';
 import Validate, {
     IValidate,
     IData,
@@ -28,7 +29,7 @@ export default class ValidateObject extends Validate implements IValidateObject 
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
                 }
-            } else if (isObject(value)) {
+            } else if (!isObject(value)) {
                 error = true;
                 message = `${key} should be an object, recieved ${typeof value}.`;
             }
@@ -51,18 +52,9 @@ export default class ValidateObject extends Validate implements IValidateObject 
             const value = data[key];
             let error = false;
             let message = '';
+            const { isValid } = checkFast(shape, value);
 
-            const matchFailed = Object.keys(shape)
-                .some((shapeKey) => {
-                    const validatorFn = shape[shapeKey];
-                    const {
-                        error: err,
-                    } = validatorFn(value, shapeKey);
-
-                    return err;
-                })
-
-            if (matchFailed) {
+            if (!isValid) {
                 error = true;
                 message = `The data object does not match the schema shape`;
             }
