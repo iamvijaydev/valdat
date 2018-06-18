@@ -14,10 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Validate_1 = __importDefault(require("./Validate"));
-// export interface IValidateEnum extends IOneOf, IOneOfType {
-//     oneOf(types: any[]): IValidateEnum;
-//     oneOfType(types: Function[]): IValidateEnum;
-// }
 var ValidateEnum = /** @class */ (function (_super) {
     __extends(ValidateEnum, _super);
     function ValidateEnum() {

@@ -1,11 +1,17 @@
+import isUndefined from 'lodash/isUndefined';
 import isNumber from 'lodash/isNumber';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateNumber } from './interface/IValidateNumber';
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateNumber extends IValidate {
+    number(): IValidateNumber;
+    min(min: number): IValidateNumber;
+    max(max: number): IValidateNumber;
+}
 
 export default class ValidateNumber extends Validate implements IValidateNumber {
     constructor() {
@@ -18,7 +24,7 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
             let error = false;
             let message = '';
 
-            if (value === null) {
+            if (isUndefined(value)) {
                 if (this.required) {
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
@@ -39,11 +45,18 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
 
     private minFatory(min: number): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isNumber(min)) {
+                throw new Error('Incorrect/no `min` value provided while declaring schema with `number().min`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (value < min) {
+            if (!isNumber(value)) {
+                error = true;
+                message = `${key} should be a number to compare with min`;
+            } else if (value < min) {
                 error = true;
                 message = `${key} should be greater than or equal to ${min}.`;
             }
@@ -59,11 +72,18 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
 
     private maxFatory(max: number): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isNumber(max)) {
+                throw new Error('Incorrect/no `max` value provided while declaring schema with `number().max`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (value > max) {
+            if (!isNumber(value)) {
+                error = true;
+                message = `${key} should be a number to compare with max`;
+            } else if (value > max) {
                 error = true;
                 message = `${key} should be less than or equal to ${max}.`;
             }

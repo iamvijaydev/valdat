@@ -1,14 +1,17 @@
-import {
+import isUndefined from 'lodash/isUndefined';
+import isArray from 'lodash/isArray';
+import isFunction from 'lodash/isFunction';
+
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateEnum } from './interface/IValidateEnum';
-import Validate from './Validate';
+} from './Validate';
 
-// export interface IValidateEnum extends IOneOf, IOneOfType {
-//     oneOf(types: any[]): IValidateEnum;
-//     oneOfType(types: Function[]): IValidateEnum;
-// }
+export interface IValidateEnum extends IValidate {
+    oneOf(types: any[]): IValidateEnum;
+    oneOfType(types: Function[]): IValidateEnum;
+}
 
 export default class ValidateEnum extends Validate implements IValidateEnum {
     constructor() {
@@ -17,13 +20,24 @@ export default class ValidateEnum extends Validate implements IValidateEnum {
 
     private oneOfFactory(types: any[]): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isArray(types)) {
+                throw new Error('Incorrect/no `types` value provided while declaring schema with `oneOf`.');
+            } else if (types.length) {
+                throw new Error('Empty array `types` is not allowed while declaring schema with `oneOf`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (!types.includes(value)) {
+            if (isUndefined(value)) {
+                if (this.required) {
+                    error = true;
+                    message = `${key} is required, but its value is undefined.`;
+                }
+            } else if (!types.includes(value)) {
                 error = true;
-                message = `enum mismatch`;
+                message = `The current value ${key}: ${value}, is not not allowed`;
             }
 
             return {
@@ -37,14 +51,35 @@ export default class ValidateEnum extends Validate implements IValidateEnum {
 
     private oneOfTypeFactory(types: Function[]): IValidator {
         const validator =  (data: IData, key: string) => {
-            const value = data[key];
-            const match = types.some((validatorFn) => {
-                const { error: err } = validatorFn(data, key);
+            if (!isArray(types)) {
+                throw new Error('Incorrect/no `types` value provided while declaring schema with `oneOfType`.');
+            } else if (types.length) {
+                throw new Error('Empty array `types` is not allowed while declaring schema with `oneOfType`.');
+            }
 
-                return !err;
-            })
-            const error = !match;
-            const message = error ? 'Failed to match' : '';
+            const value = data[key];
+            let error = false;
+            let message = '';
+
+            if (isUndefined(value)) {
+                if (this.required) {
+                    error = true;
+                    message = `${key} is required, but its value is undefined.`;
+                }
+            } else {
+                const match = types.some((validatorFn, index) => {
+                    if (!isFunction(validatorFn)) {
+                        throw new Error(`Incorrect \`validatorFn\` found at ${index} of \`types\` in schema with \`oneOfType\`.`);
+                    }
+
+                    const { error: err } = validatorFn(data, key);
+
+                    return !err;
+                });
+
+                error = !match;
+                message = error ? `The current value ${key} is not not allowed` : '';
+            }
 
             return {
                 error,

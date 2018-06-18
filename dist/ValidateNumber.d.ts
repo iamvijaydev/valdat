@@ -1,5 +1,9 @@
-import { IValidateNumber } from './interface/IValidateNumber';
-import Validate from './Validate';
+import Validate, { IValidate } from './Validate';
+export interface IValidateNumber extends IValidate {
+    number(): IValidateNumber;
+    min(min: number): IValidateNumber;
+    max(max: number): IValidateNumber;
+}
 export default class ValidateNumber extends Validate implements IValidateNumber {
     constructor();
     private numberFatory;

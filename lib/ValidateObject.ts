@@ -1,11 +1,16 @@
+import isUndefined from 'lodash/isUndefined';
 import isObject from 'lodash/isObject';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateObject } from './interface/IValidateObject'
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateObject extends IValidate {
+    object(): IValidateObject;
+    shape(shape: IData): IValidateObject;
+}
 
 export default class ValidateObject extends Validate implements IValidateObject {
     constructor() {
@@ -18,7 +23,7 @@ export default class ValidateObject extends Validate implements IValidateObject 
             let error = false;
             let message = '';
 
-            if (value === null) {
+            if (isUndefined(value)) {
                 if (this.required) {
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
@@ -39,6 +44,10 @@ export default class ValidateObject extends Validate implements IValidateObject 
 
     private shapeFactory(shape: IData): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isObject(shape)) {
+                throw new Error('Incorrect/no `shape` value provided while declaring schema with `object().shape`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
@@ -55,7 +64,7 @@ export default class ValidateObject extends Validate implements IValidateObject 
 
             if (matchFailed) {
                 error = true;
-                message = `The data object does not matche the schema shape`;
+                message = `The data object does not match the schema shape`;
             }
 
             return {

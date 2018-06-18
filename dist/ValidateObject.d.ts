@@ -1,6 +1,8 @@
-import { IData } from './interface/common';
-import { IValidateObject } from './interface/IValidateObject';
-import Validate from './Validate';
+import Validate, { IValidate, IData } from './Validate';
+export interface IValidateObject extends IValidate {
+    object(): IValidateObject;
+    shape(shape: IData): IValidateObject;
+}
 export default class ValidateObject extends Validate implements IValidateObject {
     constructor();
     private objectFatory;

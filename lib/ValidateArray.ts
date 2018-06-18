@@ -1,11 +1,18 @@
+import isUndefined from 'lodash/isUndefined';
 import isArray from 'lodash/isArray';
+import isFunction from 'lodash/isFunction';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateArray } from './interface/IValidateArray'
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateArray extends IValidate {
+    array(): IValidateArray;
+    notEmpty(): IValidateArray;
+    ofType(type: Function): IValidateArray;
+}
 
 export default class ValidateArray extends Validate implements IValidateArray {
     constructor() {
@@ -18,7 +25,7 @@ export default class ValidateArray extends Validate implements IValidateArray {
             let error = false;
             let message = '';
 
-            if (value === null) {
+            if (isUndefined(value)) {
                 if (this.required) {
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
@@ -57,8 +64,12 @@ export default class ValidateArray extends Validate implements IValidateArray {
         return validator;
     }
 
-    private ofFactory(type: Function): IValidator {
+    private ofTypeFactory(type: Function): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isFunction(type)) {
+                throw new Error('Incorrect/no `type` value provided while declaring schema with `array().ofType`.');
+            }
+
             const value = data[key];
             const match = value.some((item: any) => {
                 const { error: err } = type({ check: item }, 'check');
@@ -88,7 +99,7 @@ export default class ValidateArray extends Validate implements IValidateArray {
     }
 
     ofType(type: Function): ValidateArray {
-        this.stack.push(this.ofFactory(type));
+        this.stack.push(this.ofTypeFactory(type));
         return this;
     }
 }

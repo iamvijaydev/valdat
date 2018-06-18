@@ -1,17 +1,38 @@
 import isFunction from 'lodash/isFunction';
 
-import { IData } from './interface/common';
-import { Ivaldat } from './interface/Ivaldat';
-import Validate from './Validate';
-import ValidateString from './ValidateString';
-import ValidateNumber from './ValidateNumber';
-import ValidateBoolean from './ValidateBoolean';
-import ValidateObject from './ValidateObject';
-import ValidateArray from './ValidateArray';
-import ValidateEnum from './ValidateEnum';
+import Validate, {
+    IValidate,
+    IData,
+    IValidator
+} from './Validate';
+import ValidateString, { IValidateString } from './ValidateString';
+import ValidateNumber, { IValidateNumber } from './ValidateNumber';
+import ValidateBoolean, { IValidateBoolean } from './ValidateBoolean';
+import ValidateObject, { IValidateObject } from './ValidateObject';
+import ValidateArray, { IValidateArray } from './ValidateArray';
+import ValidateEnum, { IValidateEnum } from './ValidateEnum';
+
+export interface Ivaldat {
+    check(schema: IData, data: IData): {
+        isValid: boolean;
+        errors: IData;
+    };
+    register(name: string, method: Function): Function;
+    custom(validator: Function): {
+        stack: Function[];
+    };
+    string(): IValidateString;
+    number(): IValidateNumber;
+    boolean(): IValidateBoolean;
+    object(): IValidateObject;
+    array(): IValidateArray;
+    oneOf(types: any[]): IValidateEnum;
+    oneOfType(types: Function[]): IValidateEnum;
+    [propName: string]: Function;
+}
 
 const valdat: Ivaldat = {
-    check: (schema = {}, data = {}) => {
+    check: (schema: IData = {}, data: IData = {}) => {
         let isValid = true;
         let errors: IData = {};
 
@@ -38,7 +59,7 @@ const valdat: Ivaldat = {
             errors
         }
     },
-    register: (name, method) => {
+    register: (name: string, method: Function) => {
         if (!name) {
             throw new Error('Register expects to be called with a name.');
         }
@@ -49,21 +70,23 @@ const valdat: Ivaldat = {
         valdat[name] = method;
         return valdat[name];
     },
-    custom: (validator) => {
+    custom: (validator: Function) => {
         if (!isFunction(validator)) {
             throw new Error('Custom expects the validator to be function.')
         }
 
         return { stack: [validator] };
     },
-    string: new ValidateString().string,
-    number: new ValidateNumber().number,
-    boolean: new ValidateBoolean().boolean,
-    object: new ValidateObject().object,
-    array: new ValidateArray().array,
-    oneOf: new ValidateEnum().oneOf,
-    oneOfType: new ValidateEnum().oneOfType,
+    string: () => new ValidateString().string(),
+    number: () => new ValidateNumber().number(),
+    boolean: () => new ValidateBoolean().boolean(),
+    object: () => new ValidateObject().object(),
+    array: () => new ValidateArray().array(),
+    oneOf: (types) => new ValidateEnum().oneOf(types),
+    oneOfType: (types) => new ValidateEnum().oneOfType(types),
 };
 
 export { Validate }
+export { IValidate }
+export { IValidator }
 export { valdat as default };

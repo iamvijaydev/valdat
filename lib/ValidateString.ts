@@ -1,11 +1,19 @@
+import isUndefined from 'lodash/isUndefined';
 import isString from 'lodash/isString';
+import isNumber from 'lodash/isNumber';
+import isRegExp from 'lodash/isRegExp';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateString } from './interface/IValidateString';
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateString extends IValidate {
+    string(): IValidateString;
+    hasLen(length: number): IValidateString;
+    matchRegex(regex: RegExp): IValidateString;
+}
 
 export default class ValidateString extends Validate implements IValidateString {
     constructor() {
@@ -18,7 +26,7 @@ export default class ValidateString extends Validate implements IValidateString 
             let error = false;
             let message = '';
 
-            if (value === null) {
+            if (isUndefined(value)) {
                 if (this.required) {
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
@@ -39,11 +47,18 @@ export default class ValidateString extends Validate implements IValidateString 
 
     private hasLenFatory(length: number): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isNumber(length)) {
+                throw new Error('Incorrect/no `length` provided while declaring schema with `string().hasLen`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (value.length !== length) {
+            if (!isString(value)) {
+                error = true;
+                message = `${key} should be a string to check it's length`;
+            } else if (value.length !== length) {
                 error = true;
                 message = `${key} should be of length ${length}.`;
             }
@@ -57,13 +72,20 @@ export default class ValidateString extends Validate implements IValidateString 
         return validator;
     }
 
-    private regexFactory(regex: RegExp): IValidator {
+    private matchRegexFactory(regex: RegExp): IValidator {
         const validator = (data: IData, key: string) => {
+            if (!isRegExp(regex)) {
+                throw new Error('Incorrect/no `regex` provided while declaring schema with `string().matchRegex`.');
+            }
+
             const value = data[key];
             let error = false;
             let message = '';
 
-            if (!regex.test(value)) {
+            if (!isString(value)) {
+                error = true;
+                message = `${key} should be a string to match regex.`;
+            } else if (!regex.test(value)) {
                 error = true;
                 message = `${key} does not match the regex ${regex}.`;
             }
@@ -88,7 +110,7 @@ export default class ValidateString extends Validate implements IValidateString 
     }
 
     matchRegex(regex: RegExp): ValidateString {
-        this.stack.push(this.regexFactory(regex));
+        this.stack.push(this.matchRegexFactory(regex));
         return this;
     }
 }

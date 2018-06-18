@@ -1,11 +1,15 @@
+import isUndefined from 'lodash/isUndefined';
 import isBoolean from 'lodash/isBoolean';
 
-import {
+import Validate, {
+    IValidate,
     IData,
     IValidator
-} from './interface/common';
-import { IValidateBoolean } from './interface/IValidateBoolean';
-import Validate from './Validate';
+} from './Validate';
+
+export interface IValidateBoolean extends IValidate {
+    boolean(): IValidateBoolean;
+}
 
 export default class ValidateBoolean extends Validate implements IValidateBoolean {
     constructor() {
@@ -18,7 +22,7 @@ export default class ValidateBoolean extends Validate implements IValidateBoolea
             let error = false;
             let message = '';
 
-            if (value === null) {
+            if (isUndefined(value)) {
                 if (this.required) {
                     error = true;
                     message = `${key} is required, but its value is undefined.`;

@@ -1,5 +1,9 @@
-import { IValidateArray } from './interface/IValidateArray';
-import Validate from './Validate';
+import Validate, { IValidate } from './Validate';
+export interface IValidateArray extends IValidate {
+    array(): IValidateArray;
+    notEmpty(): IValidateArray;
+    ofType(type: Function): IValidateArray;
+}
 export default class ValidateArray extends Validate implements IValidateArray {
     constructor();
     private arrayFactory;
