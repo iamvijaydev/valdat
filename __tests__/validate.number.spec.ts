@@ -1,20 +1,20 @@
 import valdat from '../lib';
 import isEqual from 'lodash/isEqual';
 
-describe('valdat.string()', () => {
-    test('valdat.string: is defined', () => {
-        expect(valdat.string).toBeDefined();
+describe('valdat.number()', () => {
+    test('valdat.number: is defined', () => {
+        expect(valdat.number).toBeDefined();
     });
 
     const schema = {
-        name: valdat.string()
+        age: valdat.number()
     }
     const schemaReq = {
-        name: valdat.string().isRequired()
+        age: valdat.number().isRequired()
     }
     const empty = {}
-    const incorrect = { name: 123 };
-    const correct = { name: 'Solo' };
+    const incorrect = { age: '23' };
+    const correct = { age: 23 };
 
     test('Pass validation with no data', () => {
         const { isValid } = valdat.check(schema, empty);
@@ -53,20 +53,20 @@ describe('valdat.string()', () => {
     });
 });
 
-describe('valdat.string().hasLen()', () => {
-    test('valdat.string().hasLen: is defined', () => {
-        expect(valdat.string().hasLen).toBeDefined();
+describe('valdat.number().min()', () => {
+    test('valdat.number().min: is defined', () => {
+        expect(valdat.number().min).toBeDefined();
     });
 
     const schema = {
-        name: valdat.string().hasLen(4)
+        name: valdat.number().min(4)
     }
     const schemaReq = {
-        name: valdat.string().hasLen(4).isRequired()
+        name: valdat.number().min(4).isRequired()
     }
     const empty = {}
-    const incorrect = { name: 123 };
-    const correct = { name: 'Solo' };
+    const incorrect = { name: 2 };
+    const correct = { name: 23 };
 
     test('Fails validation with no data', () => {
         const { isValid } = valdat.check(schema, empty);
@@ -105,20 +105,20 @@ describe('valdat.string().hasLen()', () => {
     });
 });
 
-describe('valdat.string().matchRegex()', () => {
-    test('valdat.string().matchRegex: is defined', () => {
-        expect(valdat.string().matchRegex).toBeDefined();
+describe('valdat.number().max()', () => {
+    test('valdat.number().max: is defined', () => {
+        expect(valdat.number().max).toBeDefined();
     });
 
     const schema = {
-        name: valdat.string().matchRegex(/^Solo$/)
+        name: valdat.number().max(25)
     }
     const schemaReq = {
-        name: valdat.string().matchRegex(/^Solo$/).isRequired()
+        name: valdat.number().max(25).isRequired()
     }
     const empty = {}
-    const incorrect = { name: 123 };
-    const correct = { name: 'Solo' };
+    const incorrect = { name: 27 };
+    const correct = { name: 23 };
 
     test('Fails validation with no data', () => {
         const { isValid } = valdat.check(schema, empty);
@@ -157,19 +157,19 @@ describe('valdat.string().matchRegex()', () => {
     });
 });
 
-describe('valdat.string().sameAs()', () => {
+describe('valdat.number().sameAs()', () => {
     const schema = {
-        friend: valdat.string(),
-        godFather: valdat.string().sameAs('friend')
+        accountNo: valdat.number(),
+        reAccountNo: valdat.number().sameAs('accountNo')
     };
     const empty = {};
     const incorrect = {
-        friend: 'Sirius',
-        godFather: 'sniffles'
+        accountNo: 123456,
+        reAccountNo: 654321
     };
     const correct = {
-        friend: 'Sirius',
-        godFather: 'Sirius'
+        accountNo: 123456,
+        reAccountNo: 123456
     };
 
     test('Pass validation with no data', () => {

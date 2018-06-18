@@ -8,7 +8,7 @@
   "scripts": {
     "setup": "npm install",
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --colors",
     "test:watch": "jest --watch",
     "clean": "shx rm -rf dist/* docs/* && shx echo Cleaned",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./lib/",
