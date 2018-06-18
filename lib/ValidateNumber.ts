@@ -29,7 +29,7 @@ export default class ValidateNumber extends Validate implements IValidateNumber 
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
                 }
-            } else if (isNumber(value)) {
+            } else if (!isNumber(value)) {
                 error = true;
                 message = `${key} should be number, recieved ${typeof value}.`;
             }

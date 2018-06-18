@@ -76,7 +76,7 @@ export default class Validate implements IValidate {
 
     private sameAsFatory(otherKey: string): IValidator {
         const validator = (data: IData, key: string) => {
-            if (!isString(length)) {
+            if (!isString(otherKey)) {
                 throw new Error('Incorrect/no `key` provided while declaring schema with `.sameAs`.');
             }
 
@@ -86,10 +86,8 @@ export default class Validate implements IValidate {
             let message = '';
 
             if (!isEqual(value, otherValue)) {
-                if (this.required) {
-                    error = true;
-                    message = `The value of ${key} should be same as ${otherKey}`;
-                }
+                error = true;
+                message = `The value of ${key} should be same as ${otherKey}`;
             }
 
             return {
