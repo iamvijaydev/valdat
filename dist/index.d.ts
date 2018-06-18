@@ -1,4 +1,4 @@
-import Validate, { IData } from './Validate';
+import Validate, { IValidate, IData, IValidator } from './Validate';
 import { IValidateString } from './ValidateString';
 import { IValidateNumber } from './ValidateNumber';
 import { IValidateBoolean } from './ValidateBoolean';
@@ -25,4 +25,6 @@ export interface Ivaldat {
 }
 declare const valdat: Ivaldat;
 export { Validate };
+export { IValidate };
+export { IValidator };
 export { valdat as default };

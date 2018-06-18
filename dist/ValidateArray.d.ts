@@ -8,7 +8,7 @@ export default class ValidateArray extends Validate implements IValidateArray {
     constructor();
     private arrayFactory;
     private notEmptyFactory;
-    private ofFactory;
+    private ofTypeFactory;
     array(): ValidateArray;
     notEmpty(): ValidateArray;
     ofType(type: Function): ValidateArray;

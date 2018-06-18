@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 var isNumber_1 = __importDefault(require("lodash/isNumber"));
 var Validate_1 = __importDefault(require("./Validate"));
 var ValidateNumber = /** @class */ (function (_super) {
@@ -26,7 +27,7 @@ var ValidateNumber = /** @class */ (function (_super) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (value === null) {
+            if (isUndefined_1.default(value)) {
                 if (_this.required) {
                     error = true;
                     message = key + " is required, but its value is undefined.";
@@ -45,10 +46,17 @@ var ValidateNumber = /** @class */ (function (_super) {
     };
     ValidateNumber.prototype.minFatory = function (min) {
         var validator = function (data, key) {
+            if (!isNumber_1.default(min)) {
+                throw new Error('Incorrect/no `min` value provided while declaring schema with `number().min`.');
+            }
             var value = data[key];
             var error = false;
             var message = '';
-            if (value < min) {
+            if (!isNumber_1.default(value)) {
+                error = true;
+                message = key + " should be a number to compare with min";
+            }
+            else if (value < min) {
                 error = true;
                 message = key + " should be greater than or equal to " + min + ".";
             }
@@ -61,10 +69,17 @@ var ValidateNumber = /** @class */ (function (_super) {
     };
     ValidateNumber.prototype.maxFatory = function (max) {
         var validator = function (data, key) {
+            if (!isNumber_1.default(max)) {
+                throw new Error('Incorrect/no `max` value provided while declaring schema with `number().max`.');
+            }
             var value = data[key];
             var error = false;
             var message = '';
-            if (value > max) {
+            if (!isNumber_1.default(value)) {
+                error = true;
+                message = key + " should be a number to compare with max";
+            }
+            else if (value > max) {
                 error = true;
                 message = key + " should be less than or equal to " + max + ".";
             }

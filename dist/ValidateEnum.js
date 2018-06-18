@@ -13,6 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var isUndefined_1 = __importDefault(require("lodash/isUndefined"));
+var isArray_1 = __importDefault(require("lodash/isArray"));
+var isFunction_1 = __importDefault(require("lodash/isFunction"));
 var Validate_1 = __importDefault(require("./Validate"));
 var ValidateEnum = /** @class */ (function (_super) {
     __extends(ValidateEnum, _super);
@@ -20,13 +23,26 @@ var ValidateEnum = /** @class */ (function (_super) {
         return _super.call(this) || this;
     }
     ValidateEnum.prototype.oneOfFactory = function (types) {
+        var _this = this;
         var validator = function (data, key) {
+            if (!isArray_1.default(types)) {
+                throw new Error('Incorrect/no `types` value provided while declaring schema with `oneOf`.');
+            }
+            else if (types.length) {
+                throw new Error('Empty array `types` is not allowed while declaring schema with `oneOf`.');
+            }
             var value = data[key];
             var error = false;
             var message = '';
-            if (!types.includes(value)) {
+            if (isUndefined_1.default(value)) {
+                if (_this.required) {
+                    error = true;
+                    message = key + " is required, but its value is undefined.";
+                }
+            }
+            else if (!types.includes(value)) {
                 error = true;
-                message = "enum mismatch";
+                message = "The current value " + key + ": " + value + ", is not not allowed";
             }
             return {
                 error: error,
@@ -36,14 +52,34 @@ var ValidateEnum = /** @class */ (function (_super) {
         return validator;
     };
     ValidateEnum.prototype.oneOfTypeFactory = function (types) {
+        var _this = this;
         var validator = function (data, key) {
+            if (!isArray_1.default(types)) {
+                throw new Error('Incorrect/no `types` value provided while declaring schema with `oneOfType`.');
+            }
+            else if (types.length) {
+                throw new Error('Empty array `types` is not allowed while declaring schema with `oneOfType`.');
+            }
             var value = data[key];
-            var match = types.some(function (validatorFn) {
-                var err = validatorFn(data, key).error;
-                return !err;
-            });
-            var error = !match;
-            var message = error ? 'Failed to match' : '';
+            var error = false;
+            var message = '';
+            if (isUndefined_1.default(value)) {
+                if (_this.required) {
+                    error = true;
+                    message = key + " is required, but its value is undefined.";
+                }
+            }
+            else {
+                var match = types.some(function (validatorFn, index) {
+                    if (!isFunction_1.default(validatorFn)) {
+                        throw new Error("Incorrect `validatorFn` found at " + index + " of `types` in schema with `oneOfType`.");
+                    }
+                    var err = validatorFn(data, key).error;
+                    return !err;
+                });
+                error = !match;
+                message = error ? "The current value " + key + " is not not allowed" : '';
+            }
             return {
                 error: error,
                 message: message,

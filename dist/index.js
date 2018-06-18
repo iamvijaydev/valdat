@@ -52,13 +52,13 @@ var valdat = {
         }
         return { stack: [validator] };
     },
-    string: new ValidateString_1.default().string,
-    number: new ValidateNumber_1.default().number,
-    boolean: new ValidateBoolean_1.default().boolean,
-    object: new ValidateObject_1.default().object,
-    array: new ValidateArray_1.default().array,
-    oneOf: new ValidateEnum_1.default().oneOf,
-    oneOfType: new ValidateEnum_1.default().oneOfType,
+    string: function () { return new ValidateString_1.default().string(); },
+    number: function () { return new ValidateNumber_1.default().number(); },
+    boolean: function () { return new ValidateBoolean_1.default().boolean(); },
+    object: function () { return new ValidateObject_1.default().object(); },
+    array: function () { return new ValidateArray_1.default().array(); },
+    oneOf: function (types) { return new ValidateEnum_1.default().oneOf(types); },
+    oneOfType: function (types) { return new ValidateEnum_1.default().oneOfType(types); },
 };
 exports.default = valdat;
 //# sourceMappingURL=index.js.map

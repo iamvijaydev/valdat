@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 var isObject_1 = __importDefault(require("lodash/isObject"));
 var Validate_1 = __importDefault(require("./Validate"));
 var ValidateObject = /** @class */ (function (_super) {
@@ -26,7 +27,7 @@ var ValidateObject = /** @class */ (function (_super) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (value === null) {
+            if (isUndefined_1.default(value)) {
                 if (_this.required) {
                     error = true;
                     message = key + " is required, but its value is undefined.";
@@ -45,6 +46,9 @@ var ValidateObject = /** @class */ (function (_super) {
     };
     ValidateObject.prototype.shapeFactory = function (shape) {
         var validator = function (data, key) {
+            if (!isObject_1.default(shape)) {
+                throw new Error('Incorrect/no `shape` value provided while declaring schema with `object().shape`.');
+            }
             var value = data[key];
             var error = false;
             var message = '';
@@ -56,7 +60,7 @@ var ValidateObject = /** @class */ (function (_super) {
             });
             if (matchFailed) {
                 error = true;
-                message = "The data object does not matche the schema shape";
+                message = "The data object does not match the schema shape";
             }
             return {
                 error: error,

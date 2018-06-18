@@ -8,7 +8,7 @@ export default class ValidateString extends Validate implements IValidateString 
     constructor();
     private stringFatory;
     private hasLenFatory;
-    private regexFactory;
+    private matchRegexFactory;
     string(): ValidateString;
     hasLen(length: number): ValidateString;
     matchRegex(regex: RegExp): ValidateString;

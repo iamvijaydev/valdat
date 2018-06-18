@@ -13,7 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 var isArray_1 = __importDefault(require("lodash/isArray"));
+var isFunction_1 = __importDefault(require("lodash/isFunction"));
 var Validate_1 = __importDefault(require("./Validate"));
 var ValidateArray = /** @class */ (function (_super) {
     __extends(ValidateArray, _super);
@@ -26,7 +28,7 @@ var ValidateArray = /** @class */ (function (_super) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (value === null) {
+            if (isUndefined_1.default(value)) {
                 if (_this.required) {
                     error = true;
                     message = key + " is required, but its value is undefined.";
@@ -59,8 +61,11 @@ var ValidateArray = /** @class */ (function (_super) {
         };
         return validator;
     };
-    ValidateArray.prototype.ofFactory = function (type) {
+    ValidateArray.prototype.ofTypeFactory = function (type) {
         var validator = function (data, key) {
+            if (!isFunction_1.default(type)) {
+                throw new Error('Incorrect/no `type` value provided while declaring schema with `array().ofType`.');
+            }
             var value = data[key];
             var match = value.some(function (item) {
                 var err = type({ check: item }, 'check').error;
@@ -84,7 +89,7 @@ var ValidateArray = /** @class */ (function (_super) {
         return this;
     };
     ValidateArray.prototype.ofType = function (type) {
-        this.stack.push(this.ofFactory(type));
+        this.stack.push(this.ofTypeFactory(type));
         return this;
     };
     return ValidateArray;

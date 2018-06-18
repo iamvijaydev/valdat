@@ -13,7 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 var isString_1 = __importDefault(require("lodash/isString"));
+var isNumber_1 = __importDefault(require("lodash/isNumber"));
+var isRegExp_1 = __importDefault(require("lodash/isRegExp"));
 var Validate_1 = __importDefault(require("./Validate"));
 var ValidateString = /** @class */ (function (_super) {
     __extends(ValidateString, _super);
@@ -26,7 +29,7 @@ var ValidateString = /** @class */ (function (_super) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (value === null) {
+            if (isUndefined_1.default(value)) {
                 if (_this.required) {
                     error = true;
                     message = key + " is required, but its value is undefined.";
@@ -45,10 +48,17 @@ var ValidateString = /** @class */ (function (_super) {
     };
     ValidateString.prototype.hasLenFatory = function (length) {
         var validator = function (data, key) {
+            if (!isNumber_1.default(length)) {
+                throw new Error('Incorrect/no `length` provided while declaring schema with `string().hasLen`.');
+            }
             var value = data[key];
             var error = false;
             var message = '';
-            if (value.length !== length) {
+            if (!isString_1.default(value)) {
+                error = true;
+                message = key + " should be a string to check it's length";
+            }
+            else if (value.length !== length) {
                 error = true;
                 message = key + " should be of length " + length + ".";
             }
@@ -59,12 +69,19 @@ var ValidateString = /** @class */ (function (_super) {
         };
         return validator;
     };
-    ValidateString.prototype.regexFactory = function (regex) {
+    ValidateString.prototype.matchRegexFactory = function (regex) {
         var validator = function (data, key) {
+            if (!isRegExp_1.default(regex)) {
+                throw new Error('Incorrect/no `regex` provided while declaring schema with `string().matchRegex`.');
+            }
             var value = data[key];
             var error = false;
             var message = '';
-            if (!regex.test(value)) {
+            if (!isString_1.default(value)) {
+                error = true;
+                message = key + " should be a string to match regex.";
+            }
+            else if (!regex.test(value)) {
                 error = true;
                 message = key + " does not match the regex " + regex + ".";
             }
@@ -84,7 +101,7 @@ var ValidateString = /** @class */ (function (_super) {
         return this;
     };
     ValidateString.prototype.matchRegex = function (regex) {
-        this.stack.push(this.regexFactory(regex));
+        this.stack.push(this.matchRegexFactory(regex));
         return this;
     };
     return ValidateString;

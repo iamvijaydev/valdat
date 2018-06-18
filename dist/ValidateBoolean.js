@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 var isBoolean_1 = __importDefault(require("lodash/isBoolean"));
 var Validate_1 = __importDefault(require("./Validate"));
 var ValidateBoolean = /** @class */ (function (_super) {
@@ -26,7 +27,7 @@ var ValidateBoolean = /** @class */ (function (_super) {
             var value = data[key];
             var error = false;
             var message = '';
-            if (value === null) {
+            if (isUndefined_1.default(value)) {
                 if (_this.required) {
                     error = true;
                     message = key + " is required, but its value is undefined.";
