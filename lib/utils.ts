@@ -1,3 +1,6 @@
+import isBoolean from 'lodash/isBoolean';
+import isArray from 'lodash/isArray';
+
 import { IData } from './Validate';
 
 export const checkFast = (schema: IData = {}, data: IData = {}) => {
@@ -29,3 +32,12 @@ export const checkFast = (schema: IData = {}, data: IData = {}) => {
         errors
     }
 };
+
+export const isValidateInst = (object: any) => {
+    const {
+        required,
+        stack
+    } = object;
+
+    return isBoolean(required) && isArray(stack) && stack.length;
+}

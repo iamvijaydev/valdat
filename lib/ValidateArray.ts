@@ -1,7 +1,11 @@
 import isUndefined from 'lodash/isUndefined';
 import isArray from 'lodash/isArray';
-import isFunction from 'lodash/isFunction';
+import isObject from 'lodash/isFunction';
 
+import {
+    checkFast,
+    isValidateInst
+} from './utils';
 import Validate, {
     IValidate,
     IData,
@@ -11,7 +15,7 @@ import Validate, {
 export interface IValidateArray extends IValidate {
     array(): IValidateArray;
     notEmpty(): IValidateArray;
-    ofType(type: Function): IValidateArray;
+    ofType(type: object): IValidateArray;
 }
 
 export default class ValidateArray extends Validate implements IValidateArray {
@@ -30,7 +34,7 @@ export default class ValidateArray extends Validate implements IValidateArray {
                     error = true;
                     message = `${key} is required, but its value is undefined.`;
                 }
-            } else if (isArray(value)) {
+            } else if (!isArray(value)) {
                 error = true;
                 message = `${key} should be an array, recieved ${typeof value}.`;
             }
@@ -50,7 +54,10 @@ export default class ValidateArray extends Validate implements IValidateArray {
             let error = false;
             let message = '';
 
-            if (!value.length) {
+            if (!isArray(value)) {
+                error = true;
+                message = `${key} should be an array, recieved ${typeof value}.`;
+            } else if (!value.length) {
                 error = true;
                 message = `${key} cannot be an empty array.`;
             }
@@ -64,20 +71,42 @@ export default class ValidateArray extends Validate implements IValidateArray {
         return validator;
     }
 
-    private ofTypeFactory(type: Function): IValidator {
+    private ofTypeFactory(type: any): IValidator {
+        if (!isValidateInst(type)) {
+            throw new Error('Incorrect/no `type` value provided while declaring schema with `array().ofType`.');
+        }
+
         const validator = (data: IData, key: string) => {
-            if (!isFunction(type)) {
-                throw new Error('Incorrect/no `type` value provided while declaring schema with `array().ofType`.');
-            }
-
             const value = data[key];
-            const match = value.some((item: any) => {
-                const { error: err } = type({ check: item }, 'check');
+            let error = false;
+            let message = '';
 
-                return !err;
-            })
-            const error = type(data, key)
-            const message = error ? 'Failed to match' : '';
+            if (!isArray(value)) {
+                error = true;
+                message = `${key} should be an array, recieved ${typeof value}.`;
+            } else {
+                let index = 0;
+                const incorrectType = value.some((item: any, i: number) => {
+                    const schema = {
+                        [key]: type
+                    };
+                    const testData = {
+                        [key]: item
+                    }
+                    const { isValid } = checkFast(schema, testData);
+
+                    if (!isValid) {
+                        index = i;
+                    }
+
+                    return !isValid;
+                });
+
+                if (incorrectType) {
+                    error = true;
+                    message = `Array item at index ${index} failed to match the expected type`;
+                }
+            }
 
             return {
                 error,
@@ -98,7 +127,7 @@ export default class ValidateArray extends Validate implements IValidateArray {
         return this;
     }
 
-    ofType(type: Function): ValidateArray {
+    ofType(type: object): ValidateArray {
         this.stack.push(this.ofTypeFactory(type));
         return this;
     }

@@ -1,5 +1,4 @@
 import valdat from '../lib';
-import isEqual from 'lodash/isEqual';
 
 describe('valdat.boolean()', () => {
     test('valdat.boolean: is defined', () => {
