@@ -5,12 +5,14 @@ import Validate, {
     IData,
     IValidator
 } from './Validate';
-import ValidateString, { IValidateString } from './ValidateString';
+// import ValidateString, { IValidateString } from './ValidateString';
 import ValidateNumber, { IValidateNumber } from './ValidateNumber';
 import ValidateBoolean, { IValidateBoolean } from './ValidateBoolean';
 import ValidateObject, { IValidateObject } from './ValidateObject';
 import ValidateArray, { IValidateArray } from './ValidateArray';
 import ValidateEnum, { IValidateEnum } from './ValidateEnum';
+
+import validateString from './validateString'
 
 export interface Ivaldat {
     check(schema: IData, data: IData): {
@@ -21,7 +23,6 @@ export interface Ivaldat {
     custom(validator: Function): {
         stack: Function[];
     };
-    string(): IValidateString;
     number(): IValidateNumber;
     boolean(): IValidateBoolean;
     object(): IValidateObject;
@@ -77,13 +78,13 @@ const valdat: Ivaldat = {
 
         return { stack: [validator] };
     },
-    string: () => new ValidateString().string(),
     number: () => new ValidateNumber().number(),
     boolean: () => new ValidateBoolean().boolean(),
     object: () => new ValidateObject().object(),
     array: () => new ValidateArray().array(),
     oneOf: (types) => new ValidateEnum().oneOf(types),
     oneOfType: (types) => new ValidateEnum().oneOfType(types),
+    ...validateString(),
 };
 
 export { Validate }
