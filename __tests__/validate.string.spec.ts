@@ -53,16 +53,16 @@ describe('valdat.string()', () => {
     });
 });
 
-describe('valdat.string().hasLen()', () => {
-    test('valdat.string().hasLen: is defined', () => {
-        expect(valdat.string().hasLen).toBeDefined();
+describe('valdat.string().hasLength()', () => {
+    test('valdat.string().hasLength: is defined', () => {
+        expect(valdat.string().hasLength).toBeDefined();
     });
 
     const schema = {
-        name: valdat.string().hasLen(4)
+        name: valdat.string().hasLength(4)
     }
     const schemaReq = {
-        name: valdat.string().hasLen(4).isRequired()
+        name: valdat.string().hasLength(4).isRequired()
     }
     const empty = {}
     const incorrect = { name: 123 };
