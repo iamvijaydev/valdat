@@ -15,4 +15,7 @@ export const defaultErrorCodes = {
 
     'STRING/MATCH_REGEX/INCORRECT_TYPE': (key: string) => `${key} should be a string to match regex.`,
     'STRING/MATCH_REGEX/MISMATCH': (key: string, regex: RegExp) => `${key} does not match the regex ${regex}.`,
+
+    'BOOLEAN/REQUIRED': (key: string) => `${key} is required, but its value is undefined`,
+    'BOOLEAN/MISMATCH': (key: string, value: any) => `${key} should be boolean, recieved ${typeof value}`,
 }

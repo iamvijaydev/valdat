@@ -1,5 +1,5 @@
 import isString from 'lodash/isString';
-import isRegExp from 'lodash/isRegExp';
+import isNumber from 'lodash/isNumber';
 
 import {
     IState,
@@ -9,15 +9,15 @@ import {
 import { getErrorCodes } from '../errorCodes';
 
 const {
-    "STRING/MATCH_REGEX/INCORRECT_ARG": incorrectArgMsg,
-    "STRING/MATCH_REGEX/INCORRECT_TYPE": incorrectTypeMsg,
-    "STRING/MATCH_REGEX/MISMATCH": mismatchMsg,
+    "STRING/HAS_LENGTH/INCORRECT_ARG": incorrectArgMsg,
+    "STRING/HAS_LENGTH/INCORRECT_TYPE": incorrectTypeMsg,
+    "STRING/HAS_LENGTH/MISMATCH": mismatchMsg,
 } = getErrorCodes();
 
 export default (state: IState) => ({
-    matchRegex: (regex: RegExp) => {
-        const validator = (data: IData, key: string) => {
-            if (!isRegExp(regex)) {
+    length: (length: number) => {
+        const validator: IValidator = (data: IData, key: string) => {
+            if (!isNumber(length)) {
                 throw new Error(incorrectArgMsg);
             }
 
@@ -28,9 +28,9 @@ export default (state: IState) => ({
             if (!isString(value)) {
                 error = true;
                 message = incorrectTypeMsg(key);
-            } else if (!regex.test(value)) {
+            } else if (value.length !== length) {
                 error = true;
-                message = mismatchMsg(key, regex);
+                message = mismatchMsg(key, length);
             }
 
             return {

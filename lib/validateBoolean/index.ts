@@ -1,4 +1,4 @@
-import isString from 'lodash/isString';
+import isBoolean from 'lodash/isBoolean';
 import isUndefined from 'lodash/isUndefined';
 
 import {
@@ -8,18 +8,16 @@ import {
     createIsRequired,
     createSameAs
 } from '../baseValidate'
-import createLength from './createLength';
-import createRegex from './createRegex';
 import { getErrorCodes } from '../errorCodes';
 
 const {
-    "STRING/REQUIRED": requiredMsg,
-    "STRING/MISMATCH": mismatchMsg,
+    "BOOLEAN/REQUIRED": requiredMsg,
+    "BOOLEAN/MISMATCH": mismatchMsg,
 } = getErrorCodes();
 
 export default () => ({
-    string: () => {
-        const state: IState = getInitialState();
+    boolean: () => {
+        const state = getInitialState();
         const validator = (data: IData, key: string) => {
             const value = data[key];
             let error = false;
@@ -30,7 +28,7 @@ export default () => ({
                     error = true;
                     message = requiredMsg(key);
                 }
-            } else if (!isString(value)) {
+            } else if (!isBoolean(value)) {
                 error = true;
                 message = mismatchMsg(key, value);
             }
@@ -45,8 +43,6 @@ export default () => ({
 
         return Object.assign(
             state,
-            createLength(state),
-            createRegex(state),
             createSameAs(state),
             createIsRequired(state)
         );

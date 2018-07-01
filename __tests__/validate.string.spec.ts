@@ -53,16 +53,16 @@ describe('valdat.string()', () => {
     });
 });
 
-describe('valdat.string().hasLength()', () => {
-    test('valdat.string().hasLength: is defined', () => {
-        expect(valdat.string().hasLength).toBeDefined();
+describe('valdat.string().length()', () => {
+    test('valdat.string().length: is defined', () => {
+        expect(valdat.string().length).toBeDefined();
     });
 
     const schema = {
-        name: valdat.string().hasLength(4)
+        name: valdat.string().length(4)
     }
     const schemaReq = {
-        name: valdat.string().hasLength(4).isRequired()
+        name: valdat.string().length(4).isRequired()
     }
     const empty = {}
     const incorrect = { name: 123 };
@@ -105,16 +105,16 @@ describe('valdat.string().hasLength()', () => {
     });
 });
 
-describe('valdat.string().matchRegex()', () => {
-    test('valdat.string().matchRegex: is defined', () => {
-        expect(valdat.string().matchRegex).toBeDefined();
+describe('valdat.string().regex()', () => {
+    test('valdat.string().regex: is defined', () => {
+        expect(valdat.string().regex).toBeDefined();
     });
 
     const schema = {
-        name: valdat.string().matchRegex(/^Solo$/)
+        name: valdat.string().regex(/^Solo$/)
     }
     const schemaReq = {
-        name: valdat.string().matchRegex(/^Solo$/).isRequired()
+        name: valdat.string().regex(/^Solo$/).isRequired()
     }
     const empty = {}
     const incorrect = { name: 123 };
